@@ -279,30 +279,65 @@ th.h-cold{color:var(--c-cold)} th.h-warm{color:var(--c-warm)} th.h-kpp{color:var
 .order-wide{max-width:1480px;margin:0 auto;padding:0 12px}
 
 /* DEPLOY BANNER */
-#deploy{padding:100px 0 60px}
-.banner{position:relative;overflow:hidden;border-radius:28px;border:1px solid rgba(255,255,255,.12);background:#05080c;padding:clamp(26px,5vw,56px);isolation:isolate}
-.banner .bg{position:absolute;inset:-40%;z-index:-2;background:conic-gradient(from 0deg at 50% 50%,#ff8a3d,#a68cff,#6cc3e0,#5fd59c,#ff8a3d);filter:blur(80px);opacity:.38;animation:rot 18s linear infinite}
+#deploy{position:relative;padding:110px 0 70px;overflow:hidden}
+#deploy::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 420px at 20% 60%,rgba(255,138,61,.16),transparent 70%),radial-gradient(800px 420px at 85% 40%,rgba(166,140,255,.18),transparent 70%);pointer-events:none}
+.vb{position:relative;border-radius:30px;padding:1.5px;isolation:isolate;background:conic-gradient(from var(--ang,0deg),#ff8a3d,#ffc48f,#a68cff,#6cc3e0,#5fd59c,#ff8a3d);animation:spinb 8s linear infinite;box-shadow:0 40px 120px -40px rgba(166,140,255,.55),0 20px 80px -40px rgba(255,138,61,.5)}
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes spinb{to{--ang:360deg}}
+.vb-in{position:relative;overflow:hidden;border-radius:29px;background:radial-gradient(120% 140% at 0% 0%,#121a26 0%,#06090e 55%,#05070b 100%);padding:clamp(26px,4.6vw,60px)}
+.vb-in .stars{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(1px 1px at 12% 22%,#fff8,transparent),radial-gradient(1px 1px at 32% 78%,#fff6,transparent),radial-gradient(1.5px 1.5px at 58% 16%,#fff9,transparent),radial-gradient(1px 1px at 76% 64%,#fff5,transparent),radial-gradient(1px 1px at 88% 28%,#fff7,transparent),radial-gradient(1.5px 1.5px at 46% 52%,#fff4,transparent),radial-gradient(1px 1px at 6% 86%,#fff6,transparent);animation:tw 5s ease-in-out infinite alternate}
+@keyframes tw{to{opacity:.35}}
+.vb-in .beam{position:absolute;z-index:0;width:620px;height:620px;right:-160px;top:-260px;background:conic-gradient(from 200deg,transparent 0deg,rgba(255,255,255,.10) 18deg,transparent 40deg);filter:blur(6px);animation:rot 22s linear infinite;pointer-events:none}
 @keyframes rot{to{transform:rotate(360deg)}}
-.banner .grid{position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(ellipse at 70% 50%,#000 10%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 70% 50%,#000 10%,transparent 70%)}
-.banner .in{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:center}
-@media (max-width:900px){.banner .in{grid-template-columns:1fr}}
-.vlogo{display:inline-flex;align-items:center;gap:10px;font:600 13px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);padding:6px 12px;border-radius:999px}
-.vlogo svg{width:14px;height:14px}
-.banner h2{font-size:clamp(28px,4.4vw,54px);font-weight:800;line-height:1.04;margin:16px 0 12px;color:#fff}
-.banner h2 span{background:linear-gradient(90deg,#fff,#ffc48f 40%,#a68cff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.banner p.l{color:#c2ccd6;max-width:56ch}
-.urlbox{display:flex;align-items:center;gap:8px;margin-top:22px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:6px 6px 6px 14px;max-width:560px}
-.urlbox code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:500 15px var(--f-mono);color:#fff}
-.banner .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.btn.vercel{background:#fff;color:#000;border-color:#fff;font-weight:600}
-.btn.vercel svg{width:14px;height:14px}
-.qrcard{justify-self:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:18px;text-align:center;backdrop-filter:blur(10px);transform:perspective(900px) rotateY(-10deg) rotateX(4deg);transition:transform .5s;box-shadow:0 30px 80px -30px rgba(166,140,255,.6)}
-.qrcard:hover{transform:perspective(900px) rotateY(0) rotateX(0)}
-#qr{background:#fff;border-radius:12px;padding:12px;display:inline-block;line-height:0}
-#qr img,#qr canvas{width:180px;height:180px}
-.qrcard p{color:#c2ccd6;font-size:13px;margin-top:10px}
-.banner .feat{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;font-size:13px;color:#c2ccd6}
-.banner .feat b{color:#fff;font-family:var(--f-mono)}
+.vb-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}
+@media (max-width:980px){.vb-grid{grid-template-columns:1fr}}
+.live{display:inline-flex;align-items:center;gap:10px;font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);padding:7px 12px 7px 10px;border-radius:999px}
+.live .tri{width:14px;height:14px}
+.live .dot{width:8px;height:8px;border-radius:50%;background:#5fd59c;box-shadow:0 0 0 0 rgba(95,213,156,.7);animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(95,213,156,0)}100%{box-shadow:0 0 0 0 rgba(95,213,156,0)}}
+.live .sep{width:1px;height:12px;background:rgba(255,255,255,.2)}
+.vb h2{font-size:clamp(30px,4.8vw,60px);font-weight:800;line-height:1.02;margin:20px 0 14px;color:#fff;letter-spacing:-.02em}
+.vb h2 .g{background:linear-gradient(92deg,#fff 0%,#ffc48f 35%,#ff8a3d 55%,#a68cff 85%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s ease-in-out infinite alternate}
+@keyframes shine{to{background-position:100% 0}}
+.vb p.l{color:#b9c4cf;max-width:52ch;font-size:16px}
+.vurl{position:relative;display:flex;align-items:center;gap:10px;margin-top:26px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:8px 8px 8px 16px;max-width:560px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.vurl .lock{color:#5fd59c;flex:none;width:16px;height:16px}
+.vurl a{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 clamp(14px,1.6vw,18px) var(--f-mono);color:#fff;text-decoration:none}
+.vurl a span{color:#8798aa}
+.vurl a:hover{color:#ffc48f}
+.vacts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.vbtn{display:inline-flex;align-items:center;gap:9px;padding:12px 18px;border-radius:12px;font:600 14px var(--f-body);text-decoration:none;cursor:pointer;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#fff;transition:transform .2s,background .2s,box-shadow .2s}
+.vbtn:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)}
+.vbtn svg{width:15px;height:15px}
+.vbtn.main{background:#fff;color:#000;border-color:#fff;box-shadow:0 10px 40px -10px rgba(255,255,255,.5)}
+.vbtn.main:hover{background:#fff;box-shadow:0 14px 50px -8px rgba(255,196,143,.8)}
+.vstats{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:8px 26px;margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
+.vstats b{display:block;font:700 24px var(--f-display);color:#fff}
+.vstats span{font-size:12px;color:#8798aa}
+@media (max-width:520px){.vstats{grid-template-columns:repeat(2,auto)}}
+/* browser mockup */
+.stage3d{position:relative;perspective:1400px;min-height:420px;display:flex;align-items:center;justify-content:center}
+.browser{position:relative;width:min(100%,520px);border-radius:16px;background:#0b1118;border:1px solid rgba(255,255,255,.14);box-shadow:0 50px 100px -30px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.5);transform:rotateY(-16deg) rotateX(8deg) rotateZ(1deg);transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.8,.2,1);animation:floaty 7s ease-in-out infinite}
+@keyframes floaty{50%{translate:0 -12px}}
+.browser .bar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.08);background:#111a24;border-radius:16px 16px 0 0}
+.browser .bar i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.browser .bar i:nth-child(2){background:#febc2e}.browser .bar i:nth-child(3){background:#28c840}
+.browser .addr{flex:1;margin-left:8px;display:flex;align-items:center;gap:6px;background:#0b1118;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:5px 10px;font:500 12px var(--f-mono);color:#c2ccd6;white-space:nowrap;overflow:hidden}
+.browser .addr svg{width:11px;height:11px;color:#5fd59c;flex:none}
+.browser .view{position:relative;height:300px;overflow:hidden;border-radius:0 0 16px 16px;background:linear-gradient(180deg,#0d1a2a 0%,#3a2f3a 52%,#9a5c35 66%,#3b3024 67%,#2a2219 100%)}
+.browser .view svg{position:absolute;inset:0;width:100%;height:100%}
+.browser .ttl{position:absolute;left:18px;top:16px;font:800 18px/1.05 var(--f-display);color:#fff;z-index:2}
+.browser .ttl span{color:#ff8a3d}
+.browser .chip{position:absolute;z-index:2;font:600 10px var(--f-mono);color:#fff;background:rgba(11,17,24,.85);border:1px solid rgba(255,255,255,.14);border-left:3px solid var(--c);border-radius:6px;padding:3px 7px;white-space:nowrap}
+.rotor{transform-box:fill-box;transform-origin:center;animation:spinr 6s linear infinite}
+@keyframes spinr{to{transform:rotate(360deg)}}
+.glare{position:absolute;inset:0;border-radius:16px;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,0) 35%);mix-blend-mode:screen}
+.qrfloat{position:absolute;right:-28px;bottom:-44px;z-index:3;background:rgba(17,26,36,.92);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:12px 12px 10px;text-align:center;box-shadow:0 30px 70px -20px rgba(0,0,0,.9);transform:translateZ(60px) rotate(3deg);animation:floaty 7s ease-in-out -2s infinite}
+#qr{background:#fff;border-radius:10px;padding:8px;display:inline-block;line-height:0}
+#qr img,#qr canvas{width:120px;height:120px}
+.qrfloat p{margin-top:6px;font:500 11px var(--f-mono);color:#c2ccd6}
+@media (max-width:980px){.stage3d{min-height:0;padding:10px 0 40px}.browser{transform:rotateY(-6deg) rotateX(4deg)}}
+@media (max-width:520px){.browser .view{height:230px}.qrfloat{right:4px;bottom:-34px}#qr img,#qr canvas{width:92px;height:92px}}
+@media (prefers-reduced-motion:reduce){.vb,.browser,.qrfloat,.rotor,.vb-in .beam,.vb h2 .g{animation:none}}
 footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--dim);font-size:13px}
 
 /* TOUR */
@@ -609,21 +644,47 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--dim);fon
 <!-- DEPLOY BANNER -->
 <section id="deploy">
   <div class="wrap">
-    <div class="banner reveal">
-      <div class="bg"></div><div class="grid"></div>
-      <div class="in">
-        <div>
-          <span class="vlogo"><svg viewBox="0 0 76 65" fill="currentColor" aria-hidden="true"><path d="M37.5 0 75 65H0z"/></svg>Vercel · онлайн-версия</span>
-          <h2><span>Гид по тендеру WPP</span> — одной ссылкой</h2>
-          <p class="l">Весь сайт — сводка, расчёты, план, риски и три полных 3D-разбора — открывается в браузере на компьютере и телефоне. Отправьте ссылку команде или отсканируйте QR-код.</p>
-          <div class="urlbox"><code id="siteUrl">—</code><button class="btn sm" id="copyUrl" type="button">Копировать</button></div>
-          <div class="acts">
-            <a class="btn vercel" id="openUrl" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 76 65" fill="currentColor" aria-hidden="true"><path d="M37.5 0 75 65H0z"/></svg>Открыть сайт</a>
-            <a class="btn" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fqazaqboss%2Fazmcontract" target="_blank" rel="noopener">Развернуть копию на Vercel ↗</a>
+    <div class="vb reveal" id="vb">
+      <div class="vb-in">
+        <div class="stars"></div><div class="beam"></div>
+        <div class="vb-grid">
+          <div>
+            <span class="live"><svg class="tri" viewBox="0 0 76 65" fill="currentColor" aria-hidden="true"><path d="M37.5 0 75 65H0z"/></svg>Vercel<span class="sep"></span><span class="dot"></span>Онлайн · Production</span>
+            <h2>Весь тендер WPP —<br><span class="g">одной ссылкой</span></h2>
+            <p class="l">Сводка, расчёты, план, риски и три полных 3D-разбора открываются в браузере — на компьютере и на телефоне. Отправьте ссылку команде или наведите камеру на QR-код.</p>
+            <div class="vurl"><svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><a id="siteUrl" href="https://azmcontract.vercel.app/" target="_blank" rel="noopener"><span>https://</span>azmcontract.vercel.app</a></div>
+            <div class="vacts">
+              <a class="vbtn main" id="openUrl" href="https://azmcontract.vercel.app/" target="_blank" rel="noopener"><svg viewBox="0 0 76 65" fill="currentColor" aria-hidden="true"><path d="M37.5 0 75 65H0z"/></svg>Открыть сайт</a>
+              <button class="vbtn" id="copyUrl" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Копировать</button>
+              <button class="vbtn" id="shareUrl" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>Поделиться</button>
+            </div>
+            <div class="vstats"><div><b>3</b><span>заказа KCOI</span></div><div><b>4</b><span>3D-модели</span></div><div><b>28</b><span>вопросов</span></div><div><b>20.11</b><span>срок подачи</span></div></div>
           </div>
-          <div class="feat"><span><b>3</b> заказа</span><span><b>4</b> 3D-модели</span><span><b>28</b> вопросов</span><span><b>20.11</b> срок</span></div>
+          <div class="stage3d" id="stage3d">
+            <div class="browser" id="browser">
+              <div class="bar"><i></i><i></i><i></i><div class="addr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>azmcontract.vercel.app</div></div>
+              <div class="view">
+                <svg viewBox="0 0 520 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs><linearGradient id="gArc" x1="0" x2="1"><stop offset="0" stop-color="#7f8e9a"/><stop offset=".45" stop-color="#e3ecf2"/><stop offset="1" stop-color="#8d9ca8"/></linearGradient>
+<pattern id="ribs" width="5" height="10" patternUnits="userSpaceOnUse"><rect width="5" height="10" fill="url(#gArc)"/><rect width="1.2" height="10" fill="#6c7a86" opacity=".6"/></pattern></defs>
+<g transform="translate(40 198) scale(0.8)"><path d="M-1.6 0 L1.6 0 L0.8 -70 L-0.8 -70Z" fill="#dfe6ec" opacity=".85"/><g transform="translate(0 -70)"><g class="rotor" style="animation-duration:7s"><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(120)"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(240)"/><circle r="2.4" fill="#fff"/></g></g></g><g transform="translate(110 196) scale(0.7)"><path d="M-1.6 0 L1.6 0 L0.8 -80 L-0.8 -80Z" fill="#dfe6ec" opacity=".85"/><g transform="translate(0 -80)"><g class="rotor" style="animation-duration:5.5s"><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(120)"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(240)"/><circle r="2.4" fill="#fff"/></g></g></g><g transform="translate(200 199) scale(0.85)"><path d="M-1.6 0 L1.6 0 L0.8 -62 L-0.8 -62Z" fill="#dfe6ec" opacity=".85"/><g transform="translate(0 -62)"><g class="rotor" style="animation-duration:8s"><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(120)"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(240)"/><circle r="2.4" fill="#fff"/></g></g></g><g transform="translate(300 197) scale(0.75)"><path d="M-1.6 0 L1.6 0 L0.8 -74 L-0.8 -74Z" fill="#dfe6ec" opacity=".85"/><g transform="translate(0 -74)"><g class="rotor" style="animation-duration:6s"><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(120)"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(240)"/><circle r="2.4" fill="#fff"/></g></g></g><g transform="translate(380 198) scale(0.8)"><path d="M-1.6 0 L1.6 0 L0.8 -66 L-0.8 -66Z" fill="#dfe6ec" opacity=".85"/><g transform="translate(0 -66)"><g class="rotor" style="animation-duration:7.5s"><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(120)"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(240)"/><circle r="2.4" fill="#fff"/></g></g></g><g transform="translate(470 197) scale(0.7)"><path d="M-1.6 0 L1.6 0 L0.8 -82 L-0.8 -82Z" fill="#dfe6ec" opacity=".85"/><g transform="translate(0 -82)"><g class="rotor" style="animation-duration:5s"><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(120)"/><path d="M0 0 L-1.4 -2 L0 -30 L1.4 -2Z" fill="#eef3f7" transform="rotate(240)"/><circle r="2.4" fill="#fff"/></g></g></g>
+<path d="M0 232 L520 214 L520 300 L0 300Z" fill="#4f4b46" opacity=".9"/>
+<path d="M0 286 L520 262 L520 276 L0 300Z" fill="#232528"/>
+<g><path d="M60 246 Q60 196 112 196 Q164 196 164 246Z" fill="url(#ribs)"/><path d="M60 246 Q60 196 112 196 Q164 196 164 246" fill="none" stroke="#c7d3dc" stroke-width="1"/><rect x="98" y="226" width="26" height="20" fill="#f2a33a"/></g>
+<g><path d="M200 242 L200 212 L250 196 L300 212 L300 242Z" fill="#e2d39a"/><path d="M196 213 L250 194 L304 213 L304 208 L250 189 L196 208Z" fill="#2c6a4c"/><rect x="210" y="226" width="16" height="16" fill="#8b6b4a"/><rect x="232" y="226" width="16" height="16" fill="#8b6b4a"/><rect x="254" y="226" width="16" height="16" fill="#8b6b4a"/><rect x="278" y="218" width="12" height="7" fill="#223448"/></g>
+<g><path d="M330 238 L330 220 L400 210 L470 220 L470 238Z" fill="#4a4e55"/><path d="M326 221 L400 207 L474 221 L474 217 L400 203 L326 217Z" fill="#3a3d43"/><rect x="336" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="347" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="358" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="369" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="380" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="391" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="402" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="413" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="424" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="435" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="446" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/><rect x="457" y="224" width="7" height="7" fill="#d9e6f2" opacity=".9"/></g>
+<g><rect x="430" y="250" width="40" height="18" fill="#5a5e66"/><rect x="427" y="246" width="46" height="5" fill="#3a3d43"/><rect x="438" y="255" width="22" height="7" fill="#d9e6f2" opacity=".8"/><rect x="392" y="262" width="34" height="3" fill="#e03a3a"/><rect x="392" y="262" width="5" height="3" fill="#fff"/><rect x="402" y="262" width="5" height="3" fill="#fff"/><rect x="412" y="262" width="5" height="3" fill="#fff"/></g>
+</svg>
+                <div class="ttl">Три заказа KCOI<br><span>Жанаозен · WPP</span></div>
+                <div class="chip" style="--c:#6cc3e0;left:14%;top:52%">Холодный</div>
+                <div class="chip" style="--c:#ff8a3d;left:40%;top:46%">Тёплый</div>
+                <div class="chip" style="--c:#a68cff;left:60%;top:40%">АБК + КПП</div>
+              </div>
+              <div class="glare"></div>
+              <div class="qrfloat"><div id="qr"></div><p>сканируйте</p></div>
+            </div>
+          </div>
         </div>
-        <div class="qrcard"><div id="qr"></div><p>Наведите камеру телефона</p></div>
       </div>
     </div>
   </div>
@@ -654,7 +715,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--dim);fon
 <script>
 /* ======================= DATA ======================= */
 // Если сайт уже опубликован, впишите сюда постоянную ссылку (например, https://azmcontract.vercel.app)
-const SITE_URL = '';
+const SITE_URL = 'https://azmcontract.vercel.app/';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -1006,15 +1067,16 @@ $$('.jump[data-frame] button').forEach(b=>b.onclick=()=>jumpInFrame(b.closest('.
 
 /* ======================= DEPLOY BANNER ======================= */
 (function(){
-  const isHttp=/^https?:/.test(location.protocol);
-  const url=SITE_URL||(isHttp?location.origin+location.pathname.replace(/index\.html$/,''):'');
-  const shown=url||'Ссылка появится после публикации на Vercel';
-  $('#siteUrl').textContent=shown.replace(/\/$/,'');
-  $('#openUrl').href=url||'https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fqazaqboss%2Fazmcontract';
-  $('#copyUrl').onclick=()=>url?copy(url,'Ссылка скопирована'):toast('Сначала опубликуйте сайт на Vercel');
-  const qrText=url||'https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fqazaqboss%2Fazmcontract';
-  if(window.QRCode){try{new QRCode($('#qr'),{text:qrText,width:180,height:180,colorDark:'#0b1118',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}catch(e){}}
-  if(!url)$('.qrcard p').textContent='QR ведёт на развёртывание в Vercel';
+  const url=SITE_URL;
+  $('#copyUrl').onclick=()=>copy(url,'Ссылка скопирована');
+  $('#shareUrl').onclick=()=>{if(navigator.share)navigator.share({title:'WPP Жанаозен — тендерный гид АЗМ',url}).catch(()=>{});else copy(url,'Ссылка скопирована')};
+  if(window.QRCode){try{new QRCode($('#qr'),{text:url,width:240,height:240,colorDark:'#0b1118',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}catch(e){}}
+  // наклон окна браузера за курсором
+  const st=$('#stage3d'),br=$('#browser');
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&matchMedia('(pointer:fine)').matches){
+    st.addEventListener('pointermove',e=>{const r=st.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;br.style.transform=`rotateY(${-6+x*16}deg) rotateX(${4-y*12}deg)`});
+    st.addEventListener('pointerleave',()=>br.style.transform='');
+  }
 })();
 
 /* ======================= TOUR (текстовый гид) ======================= */
@@ -1036,7 +1098,7 @@ const TOUR=[
   {t:'Заказ 3 · КПП и АБК',x:'Два блочно-модульных здания и большой объём слаботочки — самый крупный заказ по выручке.',sel:'#order-kpp'},
   {t:'КПП и АБК · 3D-модель',x:'Переключайте здание (КПП, АБК, оба), разносите слои ползунком, «Анатомия» раскрывает конструкцию модуля. Приближение — Ctrl + колесо.',frame:'kpp',fsel:'#hero'},
   {t:'КПП и АБК · красные флаги',x:'Главное: в папках нет самого MR, лист 62127 отклонён, PAGA и тепловой расчёт ещё на рассмотрении. Границу поставки слаботочки обязательно уточнить — это самая дорогая неопределённость.',frame:'kpp',fsel:'#flags'},
-  {t:'Ссылка на сайт',x:'В конце — баннер Vercel: ссылка на опубликованный сайт, кнопка копирования и QR-код для телефона. Гид можно открыть снова кнопкой «Гид по сайту» вверху.',sel:'#deploy'}
+  {t:'Ссылка на сайт',x:'В конце — баннер Vercel: ссылка azmcontract.vercel.app, кнопки «Открыть», «Копировать», «Поделиться» и QR-код для телефона. Гид можно открыть снова кнопкой «Гид по сайту» вверху.',sel:'#deploy'}
 ];
 let ti=0;
 function showTour(i){
@@ -1049,7 +1111,7 @@ function showTour(i){
   $('#tPrev').disabled=ti===0;$('#tNext').textContent=ti===TOUR.length-1?'Готово ✓':'Далее →';
   $$('.tour-hl').forEach(e=>e.classList.remove('tour-hl'));
   if(s.go)s.go();
-  if(s.sel){const el=$(s.sel);el.scrollIntoView({behavior:'smooth'});const tgt=el.querySelector('.head,.order-head,.banner')||el;tgt.classList.add('tour-hl');setTimeout(()=>tgt.classList.remove('tour-hl'),3400)}
+  if(s.sel){const el=$(s.sel);el.scrollIntoView({behavior:'smooth'});const tgt=el.querySelector('.head,.order-head,.vb')||el;tgt.classList.add('tour-hl');setTimeout(()=>tgt.classList.remove('tour-hl'),3400)}
   if(s.hl){$(s.hl).classList.add('tour-hl');setTimeout(()=>$$('.tour-hl').forEach(e=>e.classList.remove('tour-hl')),3400)}
   if(s.frame)jumpInFrame(s.frame,s.fsel).then(el=>{if(el){el.classList.add('tour-hl');el.style.outline='2px solid #ff8a3d';el.style.outlineOffset='4px';setTimeout(()=>{el.style.outline='';el.style.outlineOffset='';el.classList.remove('tour-hl')},3400)}});
   store.set('hub-tour',ti);
