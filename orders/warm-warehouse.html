@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тёплый склад WPP — разбор тендера KCOI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Чертёжный мир: тушь на синьке, сигнальный оранжевый = то, что требует действия, циан = размеры и данные */
+  --ink:#0b1118;
+  --panel:#111a24;
+  --panel2:#16212d;
+  --line:#243444;
+  --text:#dde6ee;
+  --muted:#8798aa;
+  --accent:#ff8a3d;
+  --steel:#6cc3e0;
+  --crit:#ff5f5f; --warn:#ffc04a; --ok:#5fd59c;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.55}
+body{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;background-attachment:fixed;background-color:var(--ink)}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,transparent 0,var(--ink) 75%);pointer-events:none;z-index:0;opacity:.92}
+main,header,nav,footer{position:relative;z-index:1}
+a{color:var(--steel)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(22px,3vw,32px);font-weight:600}
+h3{font-size:15px;font-weight:600;letter-spacing:.02em}
+.mono,.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+nav.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ink) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;gap:18px;align-items:center;overflow-x:auto;height:48px;white-space:nowrap}
+nav.top a{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--f-mono)}
+nav.top a:hover,nav.top a:focus-visible{color:var(--accent)}
+nav.top .brand{color:var(--text);font-family:var(--f-display);font-size:13px;font-weight:600;margin-right:8px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header.hero{padding:40px 0 20px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase}
+.hero h1{font-size:clamp(30px,5.4vw,60px);font-weight:800;line-height:1.02;margin:10px 0 14px}
+.hero h1 span{color:var(--accent)}
+.hero p.lead{max-width:68ch;color:var(--muted);margin:0 0 22px;font-size:17px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.fact{background:var(--panel);padding:12px 14px}
+.fact b{display:block;font-family:var(--f-mono);font-size:20px;font-weight:500;color:var(--text)}
+.fact small{color:var(--muted);font-size:12px}
+.deadline{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:18px 0 0;padding:12px 16px;border:1px solid var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
+.deadline .cd{font-family:var(--f-mono);font-size:22px;color:var(--accent)}
+.deadline span{color:var(--muted);font-size:14px}
+
+section{padding:46px 0;border-top:1px solid var(--line)}
+.sec-head{display:flex;gap:14px;align-items:baseline;margin-bottom:20px;flex-wrap:wrap}
+.sec-head .no{font-family:var(--f-mono);color:var(--accent);font-size:13px}
+.sec-head p{color:var(--muted);margin:0;max-width:70ch;flex-basis:100%}
+
+/* 3D */
+.viewer{display:grid;grid-template-columns:260px 1fr;border:1px solid var(--line);background:var(--panel);min-height:640px}
+.ctrl{border-right:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:14px;font-size:13px;overflow:auto;max-height:720px}
+.ctrl fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ctrl legend{font-family:var(--f-mono);color:var(--muted);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.ctrl label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.ctrl label i{width:10px;height:10px;display:inline-block;flex:none}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+button{font:500 12px var(--f-mono);color:var(--text);background:var(--panel2);border:1px solid var(--line);padding:8px 6px;cursor:pointer;text-align:center}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button.on{background:var(--accent);color:#1a0d02;border-color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.stage{position:relative;min-height:640px;overflow:hidden}
+#c3d{position:absolute;inset:0}
+#c3d canvas{display:block}
+.hud{position:absolute;left:12px;top:12px;font:12px var(--f-mono);color:var(--muted);pointer-events:none;background:color-mix(in srgb,var(--ink) 70%,transparent);padding:6px 8px;border:1px solid var(--line)}
+#info{position:absolute;right:12px;top:12px;width:300px;max-width:calc(100% - 24px);background:color-mix(in srgb,var(--panel) 94%,transparent);border:1px solid var(--line);border-left:3px solid var(--accent);padding:12px 14px;font-size:13px}
+#info h3{margin-bottom:6px;font-size:14px}
+#info dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0}
+#info dt{color:var(--muted)}
+#info dd{margin:0;font-family:var(--f-mono);font-size:12px}
+#info .src{margin-top:8px;color:var(--steel);font-family:var(--f-mono);font-size:11px}
+.lbl{font:600 11px var(--f-mono);color:var(--ink);background:var(--steel);border-radius:50%;width:22px;height:22px;display:grid;place-items:center}
+.lbl.room{border-radius:0;width:auto;height:auto;padding:2px 6px;background:color-mix(in srgb,var(--ink) 80%,transparent);color:var(--text);border:1px solid var(--line);font-weight:400}
+.lbl.cam{border-radius:2px;width:auto;height:auto;padding:1px 4px;background:var(--crit);color:#fff}
+.legend-steel{font-size:12px;color:var(--muted)}
+
+/* grids & cards */
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);padding:16px 18px}
+.card h3{margin-bottom:10px}
+.card p{margin:0 0 8px;color:var(--muted);font-size:14px}
+.card ul{margin:0;padding-left:18px;font-size:14px}
+.card li{margin:3px 0}
+.kv{display:grid;grid-template-columns:1fr auto;gap:6px 14px;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-family:var(--f-mono);text-align:right}
+.mail{font-size:14px}
+.mail .hdr{display:grid;grid-template-columns:90px 1fr;gap:4px 10px;font-family:var(--f-mono);font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:10px}
+.mail .hdr b{color:var(--text);font-weight:500}
+.mark{background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--text);padding:0 3px}
+.chip{display:inline-block;font:500 11px var(--f-mono);padding:2px 7px;border:1px solid currentColor;letter-spacing:.04em}
+.chip.crit{color:var(--crit)} .chip.warn{color:var(--warn)} .chip.ok{color:var(--ok)} .chip.info,.chip.low{color:var(--steel)}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.scope .card.in{border-top:3px solid var(--ok)} .scope .card.out{border-top:3px solid var(--muted)}
+
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;background:var(--panel2);position:sticky;top:0}
+td.num,th.num{text-align:right;font-family:var(--f-mono)}
+.tbl{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+.tbl.tall{max-height:560px;overflow:auto}
+tfoot td{font-weight:600;background:var(--panel2)}
+
+.bars{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.bar{display:grid;grid-template-columns:90px 1fr 70px;gap:10px;align-items:center}
+.bar .track{position:relative;height:16px;background:var(--panel2);border:1px solid var(--line)}
+.bar .track::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--muted)}
+.bar .fill{position:absolute;top:0;bottom:0}
+.bar .fill.neg{background:var(--steel);right:50%}
+.bar .fill.pos{background:var(--accent);left:50%}
+.bar .v{font-family:var(--f-mono);text-align:right}
+.gauge{margin:10px 0}
+.gauge .t{display:flex;justify-content:space-between;font-size:13px}
+.gauge .track{height:10px;background:var(--panel2);border:1px solid var(--line);margin-top:4px}
+.gauge .fill{height:100%;background:var(--ok)}
+
+.issues{display:flex;flex-direction:column;gap:10px}
+.issue{display:grid;grid-template-columns:54px 1fr;gap:14px;background:var(--panel);border:1px solid var(--line);padding:14px 16px}
+.issue.crit{border-left:3px solid var(--crit)} .issue.warn{border-left:3px solid var(--warn)} .issue.low{border-left:3px solid var(--steel)}
+.issue .id{font-family:var(--f-mono);color:var(--muted);font-size:13px}
+.issue h3{font-family:var(--f-body);font-size:15px;margin:4px 0 6px}
+.issue p{margin:0 0 6px;font-size:14px;color:var(--muted)}
+.issue .q{font-size:13px;font-family:var(--f-mono);color:var(--text);background:var(--panel2);padding:8px 10px;border:1px dashed var(--line)}
+.issue .src{font-size:11px;font-family:var(--f-mono);color:var(--steel)}
+.copy{margin-top:10px}
+
+.timeline{position:relative;display:grid;grid-template-columns:repeat(9,1fr);gap:0;margin-top:10px}
+.tl{position:relative;padding:28px 8px 0;border-top:2px solid var(--line);font-size:12px}
+.tl::before{content:"";position:absolute;top:-7px;left:8px;width:12px;height:12px;background:var(--steel);border-radius:50%}
+.tl.now::before{background:var(--accent)} .tl.end::before{background:var(--crit)}
+.tl b{display:block;font-family:var(--f-mono);font-size:12px;color:var(--text)}
+.tl span{color:var(--muted)}
+.check{list-style:none;padding:0;margin:0;font-size:14px}
+.check li{display:grid;grid-template-columns:22px 1fr;gap:6px;padding:7px 0;border-bottom:1px solid var(--line)}
+.check li::before{content:"□";color:var(--accent);font-family:var(--f-mono)}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+footer{padding:30px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+
+@media (max-width:900px){
+  .viewer{grid-template-columns:1fr}
+  .ctrl{border-right:0;border-bottom:1px solid var(--line);max-height:none}
+  .stage{min-height:480px}
+  .g3,.g2,.scope{grid-template-columns:1fr}
+  .timeline{grid-template-columns:repeat(3,1fr);row-gap:18px}
+  #info{position:static;width:auto;margin:8px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Разделы">
+  <div class="wrap">
+    <span class="brand">526H00 · Warm WH</span>
+    <a href="#model">3D-анатомия</a>
+    <a href="#letter">Письмо</a>
+    <a href="#scope">Объём работ</a>
+    <a href="#input">Исходные</a>
+    <a href="#frame">Каркас</a>
+    <a href="#loads">Нагрузки</a>
+    <a href="#mep">Инженерия</a>
+    <a href="#issues">Вопросы</a>
+    <a href="#offer">Оффер</a>
+    <a href="#docs">Реестр</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">KCOI · Material Requisition Rev.02 FINAL · WPP 77 MW, этап 3B</div>
+    <h1>Тёплый склад <span>23,6 × 15,8 м</span><br>под Жанаозеном</h1>
+    <p class="lead">Одноэтажное каркасное здание из горячекатаных двутавров с ограждением из сэндвич-панелей на минвате. Поставщик проектирует каркас и все инженерные разделы, изготавливает и поставляет здание. Фундаменты в объём не входят. Ниже разобрана вся папка (55 файлов) и письмо от 12 ноября.</p>
+    <div class="facts">
+      <div class="fact"><b>372,9 м²</b><small>пятно по осям; 360,1 м² полезно</small></div>
+      <div class="fact"><b>5,93 / 7,435 м</b><small>карниз / конёк (АР)</small></div>
+      <div class="fact"><b>IIIa · R15 · C0</b><small>огнестойкость без огнезащиты</small></div>
+      <div class="fact"><b>+18 °C</b><small>внутри при −18 °C снаружи</small></div>
+      <div class="fact"><b>0,80 / 0,77 кПа</b><small>снег / ветер</small></div>
+      <div class="fact"><b>≥ 30 лет</b><small>срок службы</small></div>
+    </div>
+    <div class="deadline" role="status">
+      <div class="cd num" id="countdown">7 дн 15 ч</div>
+      <span>до подачи пересмотренных технического и коммерческого предложений: <b>20 ноября 2026, конец рабочего дня по Актау</b> (принято 18:00, UTC+5)</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- 3D -->
+<section id="model">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">01</span><h2>Анатомия здания в 3D</h2>
+      <p>Модель собрана по осям и профилям из чертежей DM-62183…62185, КЖ-62307…62312 и расчёта CD-62222. Нажмите на любой элемент, чтобы увидеть профиль, количество и документ-источник. Вращение мышью, колесо для масштаба.</p></div>
+    <div class="viewer">
+      <div class="ctrl">
+        <fieldset><legend>Сценарии</legend>
+          <div class="btns">
+            <button id="bAssemble" type="button">▶ Сборка</button>
+            <button id="bExplode" type="button">Взрыв-схема</button>
+            <button id="bXray" type="button">Рентген</button>
+            <button id="bLoads" type="button">Нагрузки</button>
+            <button id="bQuake" type="button">Сейсмика</button>
+            <button id="bLabels" type="button" class="on">Подписи</button>
+          </div>
+        </fieldset>
+        <fieldset><legend>Камера</legend>
+          <div class="btns">
+            <button type="button" data-cam="iso">Изометрия</button>
+            <button type="button" data-cam="gate">Фасад 1 (ворота)</button>
+            <button type="button" data-cam="top">План сверху</button>
+            <button type="button" data-cam="in">Внутри</button>
+          </div>
+          <label style="margin-top:6px"><input type="checkbox" id="autorot" checked> медленное вращение</label>
+        </fieldset>
+        <fieldset><legend>Разрез по длине</legend>
+          <input type="range" id="clip" min="0" max="100" value="100" aria-label="Положение разреза по длине здания">
+          <span class="legend-steel" id="clipv">разрез выключен</span>
+        </fieldset>
+        <fieldset id="layers"><legend>Слои</legend></fieldset>
+      </div>
+      <div class="stage">
+        <div id="c3d"></div>
+        <div class="hud" id="hud">оси 1–5 · ряды А–Б · отм. 0,000 = 193,75 БС</div>
+        <div class="info" id="info">
+          <h3>Выберите элемент</h3>
+          <p style="margin:0;color:var(--muted)">Колонна 35К1, ригель 35Б2, прогон 16П, связи, фундамент Fm-1, сэндвич-панель, конвектор, пожарный кран, камера… Каждый щелчок показывает данные из документации.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LETTER -->
+<section id="letter">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">02</span><h2>Что пришло в письме</h2></div>
+    <div class="g2">
+      <div class="card mail">
+        <div class="hdr">
+          <span>От</span><b>Aamer Baig, Project Procurement Manager, KCOI LLP (Актау)</b>
+          <span>Кому</span><b>Коммерческий; Асет; Mirko</b>
+          <span>Когда</span><b>чт 12.11.2026, 17:38</b>
+          <span>Тема</span><b>FW: 526H00 WPP: Warm Warehouse: <span class="mark">Lightweight thin-walled steel structures</span></b>
+        </div>
+        <p>Прислан <span class="mark">Rev.02 (FINAL)</span> Material Requisition на тёплый склад. Отличие от прошлой ревизии: <span class="mark">расширенный перечень испытаний и сертификатов</span> плюс сопутствующие чертежи.</p>
+        <p>Полный пакет (MRS, приложения A, B, C и шаблон Bidder Clarification Request) лежит в ZIP на SharePoint.</p>
+        <p>Просят пересмотреть и подать <b>техническое и коммерческое предложения</b> в полном соответствии с последним MR и всеми чертежами. Вопросы задавать только через шаблон Clarification Request.</p>
+        <p><b>Срок: 20.11.2026, COB по Актау.</b></p>
+      </div>
+      <div class="card">
+        <h3>Что на самом деле лежит в папке</h3>
+        <dl class="kv">
+          <dt>Чертежи и расчёты (PDF), Annex 1</dt><dd>53</dd>
+          <dt>Техтребования, docx от 21.10.26</dt><dd>1</dd>
+          <dt>Реестр MDR, xlsx от 09.10.26</dt><dd>1</dd>
+          <dt>Сам MRS Rev.02</dt><dd style="color:var(--crit)">нет</dd>
+          <dt>Annex A / B / C</dt><dd style="color:var(--crit)">нет</dd>
+          <dt>Шаблон Clarification Request</dt><dd style="color:var(--crit)">нет</dd>
+        </dl>
+        <p class="note" style="margin-top:12px">В папке только ANNEX 1. Сам документ MR с обновлённым перечнем испытаний и сертификатов, ради которого и вышла Rev.02, в неё не попал. Его нужно скачать из ZIP по ссылке SharePoint, иначе сверка испытаний невозможна. Разделы этого сайта про испытания помечены как «по аналогии».</p>
+        <p class="note">Внутри Annex 1 есть MR на систему видеонаблюдения (SF-65069). Это соседний пакет, он показывает структуру требований KCOI: матрицу сертификатов, гарантию, состав технической заявки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCOPE -->
+<section id="scope">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">03</span><h2>Объём работ поставщика</h2><p>По «Main Technical Requirements» от 21.10.26 (docx в папке). Слово «Supplier SoW» в документе стоит напротив каждой строки ниже.</p></div>
+    <div class="scope">
+      <div class="card in">
+        <h3><span class="chip ok">ВХОДИТ</span>&nbsp; делает поставщик</h3>
+        <ul>
+          <li>Расчёт надземного стального каркаса (КМ)</li>
+          <li>Теплотехнический расчёт и чертежи ограждения</li>
+          <li>Ограждение: сэндвич-панели с минеральной ватой</li>
+          <li>Проект всех разделов: конструкции, АР, ОВ, отопление, электрика, водопровод и канализация, противопожарный водопровод</li>
+          <li>Подбор колонн с проверкой на R15 <b>без огнезащиты</b></li>
+          <li>Антикоррозионная защита по требованиям MR</li>
+          <li>Изготовление, поставка; испытания и сертификаты по перечню Rev.02</li>
+        </ul>
+      </div>
+      <div class="card out">
+        <h3><span class="chip info">НЕ ВХОДИТ</span>&nbsp; даётся заказчиком</h3>
+        <ul>
+          <li>Расчёт и устройство фундаментов: даны в КЖ-62304…62312 и расчёте CD-62222 как исходные</li>
+          <li>Наружные сети пожарного водопровода, заземление, молниезащита, вводы коммуникаций: «по прилагаемым чертежам»</li>
+          <li>Мостового крана нет</li>
+          <li>Огнезащиты нет</li>
+        </ul>
+        <p class="note" style="margin-top:10px">Для группы: каркас из двутавров и прогонов — профиль металлоконструкционного завода, сэндвич и инженерия закупаются. Фундаменты и подливка не продаются в этом лоте.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INPUT DATA -->
+<section id="input">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">04</span><h2>Исходные данные</h2></div>
+    <div class="g3">
+      <div class="card"><h3>Площадка</h3><dl class="kv">
+        <dt>Место</dt><dd>5 км западнее Жанаозена</dd>
+        <dt>Координаты WPP</dt><dd>43°20′ N · 52°45′ E</dd>
+        <dt>Отм. 0,000</dt><dd>193,75 БС</dd>
+        <dt>Рельеф</dt><dd>191…197 м</dd>
+        <dt>Грунт основания</dt><dd>ИГЭ-2, известняк</dd>
+        <dt>ИГЭ-1 супесь</dt><dd>просадочная, удалить</dd>
+        <dt>Грунтовые воды</dt><dd>не вскрыты</dd>
+        <dt>Промерзание</dt><dd>0,8 м</dd>
+        <dt>Цемент</dt><dd>сульфатостойкий</dd>
+      </dl></div>
+      <div class="card"><h3>Климат и нагрузки</h3><dl class="kv">
+        <dt>Наружная, ТЗ</dt><dd>−18,0 / +34 °C</dd>
+        <dt>Наружная, ОВ</dt><dd>−14,9 / +28,7 °C</dd>
+        <dt>Отопительный период</dt><dd>145 сут, ср. +1,9 °C</dd>
+        <dt>Снег</dt><dd>0,80 кПа</dd>
+        <dt>Ветер, базовый</dt><dd>0,77 кПа · 35 м/с</dd>
+        <dt>agR (475 лет)</dt><dd>0,040 g</dd>
+        <dt>agR (2475 лет)</dt><dd>0,071 g</dd>
+        <dt>Расчётное ag</dt><dd>0,076 g</dd>
+        <dt>Грунт по сейсмике</dt><dd>тип II</dd>
+      </dl></div>
+      <div class="card"><h3>Пожарка и эксплуатация</h3><dl class="kv">
+        <dt>Степень огнестойкости</dt><dd>IIIa</dd>
+        <dt>Предел конструкций</dt><dd>R15</dd>
+        <dt>Стены, перегородки</dt><dd>EI15</dd>
+        <dt>Категория</dt><dd>C</dd>
+        <dt>Класс констр. опасности</dt><dd>C0</dd>
+        <dt>Огнезащита</dt><dd>нет</dd>
+        <dt>Внутри</dt><dd>+18 °C</dd>
+        <dt>Срок службы</dt><dd>≥ 30 лет</dd>
+        <dt>Класс ответственности</dt><dd>III</dd>
+      </dl></div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAME -->
+<section id="frame">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">05</span><h2>Каркас и ограждение</h2><p>Пять поперечных рам (оси 1–5) с шагом 6,0 / 5,6 / 6,0 / 6,0 м. Колонны жёстко защемлены в плоскости рамы и шарнирны из неё, ригели жёстко на колоннах и стыкуются в коньке. Продольная устойчивость: вертикальные связи по рядам и горизонтальные по покрытию. Модель в ЛИРА-САПР 2024, сталь C245 по ГОСТ 27772-2015.</p></div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Элемент</th><th>Профиль</th><th class="num">Кол-во / длина</th><th class="num">кг/м</th><th class="num">Масса, т</th><th>Источник</th></tr></thead>
+        <tbody>
+          <tr><td>Колонны рам</td><td class="mono">I 35К1</td><td class="num">10 × 5,9 м</td><td class="num">109,7</td><td class="num">6,5</td><td class="mono">DM-62184</td></tr>
+          <tr><td>Ригели рам</td><td class="mono">I 35Б2</td><td class="num">10 × 8,0 м</td><td class="num">43,3</td><td class="num">3,5</td><td class="mono">DM-62184</td></tr>
+          <tr><td>Прогоны кровли</td><td class="mono">[ 16П</td><td class="num">16 × 23,6 м</td><td class="num">14,2</td><td class="num">5,4</td><td class="mono">CD-62222 (шаг 1,2)</td></tr>
+          <tr><td>Ригели стен (фахверк)</td><td class="mono">□ 140×5</td><td class="num">≈ 290 м</td><td class="num">20,7</td><td class="num">6,0</td><td class="mono">DM-62184</td></tr>
+          <tr><td>Стойки фахверка торцов</td><td class="mono">□ 140×5</td><td class="num">4 × 6,8 м</td><td class="num">20,7</td><td class="num">0,6</td><td class="mono">КЖ-62307</td></tr>
+          <tr><td>Связи и распорки</td><td class="mono">□ 120×4</td><td class="num">≈ 220 м</td><td class="num">14,1</td><td class="num">3,1</td><td class="mono">DM-62184</td></tr>
+          <tr><td>Вторичный каркас кровли</td><td class="mono">□ 60×4</td><td class="num">по проекту</td><td class="num">6,7</td><td class="num">—</td><td class="mono">DM-62184</td></tr>
+          <tr><td>Узлы, пластины, болты</td><td>+10 %</td><td class="num"></td><td class="num"></td><td class="num">2,5</td><td></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="4">Итого металл, ориентировочно</td><td class="num">≈ 27</td><td class="mono">диапазон 23–28 т</td></tr></tfoot>
+      </table>
+    </div>
+    <p class="note">Масса — наша оценка по профилям из чертежей и погонным массам по сортаменту, не из документации. Её нужно подтвердить собственным расчётом КМ. При шаге прогонов 1,6 м (как в DM-62184) прогонов будет 12 линий и около 4,0 т вместо 5,4 т.</p>
+    <div class="g3" style="margin-top:16px">
+      <div class="card"><h3>Стены</h3><dl class="kv">
+        <dt>Сэндвич, минвата</dt><dd>100 мм</dd>
+        <dt>Облицовка</dt><dd>оцинк. 0,5 мм</dd>
+        <dt>Цвет</dt><dd>RAL 1015</dd>
+        <dt>Площадь брутто</dt><dd>≈ 487 м²</dd>
+        <dt>Проёмы</dt><dd>≈ 46 м²</dd>
+        <dt>Нетто</dt><dd>≈ 441 м²</dd>
+      </dl></div>
+      <div class="card"><h3>Кровля</h3><dl class="kv">
+        <dt>Сэндвич</dt><dd>150 мм</dd>
+        <dt>Уклон АР</dt><dd>16 %</dd>
+        <dt>Уклон расчёт</dt><dd>10 % / 6°</dd>
+        <dt>Свесы</dt><dd>200 мм</dd>
+        <dt>Площадь</dt><dd>≈ 389 м²</dd>
+        <dt>Цвет / профлист</dt><dd>RAL 6029 · Н21</dd>
+      </dl></div>
+      <div class="card"><h3>Проёмы</h3><dl class="kv">
+        <dt>Ворота, ось 1</dt><dd>3 × 3,0×3,0 м</dd>
+        <dt>Калитка</dt><dd>в правых воротах</dd>
+        <dt>Окна ОК-1</dt><dd>11 × 1460×1180</dd>
+        <dt>Низ окон</dt><dd>+3,000</dd>
+        <dt>Двери</dt><dd>ГОСТ 31173, RAL 7025</dd>
+        <dt>Пандусы</dt><dd>Pn1, уклон 10 %</dd>
+      </dl></div>
+    </div>
+    <div class="g2" style="margin-top:16px">
+      <div class="card"><h3>Помещения (по плану силового ЭО)</h3>
+        <table><thead><tr><th>№</th><th>Помещение</th><th class="num">м²</th></tr></thead><tbody>
+          <tr><td>1</td><td>Гараж, 3 въезда с оси 1</td><td class="num">210,14</td></tr>
+          <tr><td>2</td><td>Склад стеллажей</td><td class="num">50 (55,2 в АР)</td></tr>
+          <tr><td>3</td><td>Склад реагентов</td><td class="num">50</td></tr>
+          <tr><td>4</td><td>Склад масла</td><td class="num">50</td></tr>
+        </tbody><tfoot><tr><td></td><td>Итого</td><td class="num">360,14</td></tr></tfoot></table>
+      </div>
+      <div class="card"><h3>Фундаменты (вне объёма, но это интерфейс)</h3><dl class="kv">
+        <dt>Fm-1 под колонны</dt><dd>10 шт · 2,0×3,0×0,4 + 0,7×0,7×1,0</dd>
+        <dt>Анкеры Fm-1</dt><dd>М30×900</dd>
+        <dt>Fm-2 под фахверк</dt><dd>4 шт · 1,5×1,5×0,4 + 0,5×0,5×1,0</dd>
+        <dt>Анкеры Fm-2</dt><dd>М20×600</dd>
+        <dt>Бетон / арматура</dt><dd>C30/37 · A500С</dd>
+        <dt>Подливка</dt><dd>безусадочная, 150 мм</dd>
+        <dt>Плита пола</dt><dd>по грунту, ±0,000</dd>
+        <dt>Осадка</dt><dd>6 мм из 120</dd>
+      </dl></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOADS -->
+<section id="loads">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">06</span><h2>Нагрузки и запасы</h2><p>Давление ветра по зонам EN 1991-1-4 из расчёта CD-62222, ветер поперёк здания. Минус — отсос, плюс — давление.</p></div>
+    <div class="g2">
+      <div class="card"><h3>Ветер, кПа</h3>
+        <div class="bars" id="windBars"></div>
+        <p class="note">Стены: A, B, C — торцевые зоны отсоса, D — наветренная, E — подветренная. Кровля: F, G — краевые, H, I — средние, J — подветренная полоса.</p>
+      </div>
+      <div class="card"><h3>Проверки из расчёта</h3>
+        <div class="gauge"><div class="t"><span>Горизонт. смещение X</span><span class="num">8 / 40 мм</span></div><div class="track"><div class="fill" style="width:20%"></div></div></div>
+        <div class="gauge"><div class="t"><span>Горизонт. смещение Y</span><span class="num">9 / 40 мм</span></div><div class="track"><div class="fill" style="width:22.5%"></div></div></div>
+        <div class="gauge"><div class="t"><span>Осадка фундаментов</span><span class="num">6 / 120 мм</span></div><div class="track"><div class="fill" style="width:5%"></div></div></div>
+        <dl class="kv" style="margin-top:14px">
+          <dt>Снег на прогон (шаг 1,2 м)</dt><dd>0,77 кН/м</dd>
+          <dt>Вес стенового сэндвича</dt><dd>0,23 кПа</dd>
+          <dt>Вес кровельного сэндвича</dt><dd>0,27 кПа</dd>
+          <dt>Подвесная инженерия</dt><dd>1,0 кПа</dd>
+          <dt>Обслуживание кровли</dt><dd>0,4 кПа</dd>
+          <dt>Предел смещения</dt><dd>H/150</dd>
+        </dl>
+        <p class="note">Проценты использования сечений в расчёте даны картинками-мозаиками, текстом не выписаны. Вывод расчёта: прочность, устойчивость и прогибы обеспечены.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEP -->
+<section id="mep">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">07</span><h2>Инженерные системы</h2></div>
+    <div class="g3">
+      <div class="card"><h3>Отопление и вентиляция</h3><dl class="kv">
+        <dt>Теплопотери</dt><dd>33,6 кВт</dd>
+        <dt>Конвекторы ЭВУБ</dt><dd>15 шт · 33,5 кВт</dd>
+        <dt>Приток П1</dt><dd>3105 м³/ч · 473 Па</dd>
+        <dt>Калорифер П1</dt><dd>ЭКВ-80-50-60, эл.</dd>
+        <dt>Тепло на вент.</dt><dd>41,25 кВт</dd>
+        <dt>Вытяжка В1, гараж</dt><dd>2415 м³/ч</dd>
+        <dt>В2 реагенты · В3 масло</dt><dd>по 315 м³/ч</dd>
+        <dt>Тепло всего</dt><dd>77,05 кВт</dd>
+        <dt>Двигатели</dt><dd>4,7 кВт</dd>
+      </dl><p class="note">Шкаф автоматики ШСАУ на П1 и три вытяжных вентилятора.</p></div>
+      <div class="card"><h3>Электрика</h3><dl class="kv">
+        <dt>Щит ЩР3</dt><dd>ЩРУН-3/30, IP31</dd>
+        <dt>Ввод</dt><dd>ВН-32 63 А · авт. 25 А</dd>
+        <dt>Установлено / расчёт</dt><dd>11,2 / 9,2 кВт</dd>
+        <dt>Категория</dt><dd>III; ПС и аварийка — I от ИБП</dd>
+        <dt>Светильники</dt><dd>LED 25 Вт IP65, 4000 K</dd>
+        <dt>Освещённость</dt><dd>75 лк, h = 3,5 м</dd>
+        <dt>Кабель</dt><dd>ВВГнг(А)-LS / FRLS</dd>
+        <dt>Заземление</dt><dd>полоса 40×4, круг Ø16</dd>
+      </dl><p class="note" style="color:var(--crit)">11,2 кВт на щите при 75+ кВт электроотопления. См. вопрос Q1.</p></div>
+      <div class="card"><h3>Противопожарный водопровод В2</h3><dl class="kv">
+        <dt>Ввод В2-1</dt><dd>Ø76×3,5, L = 2 м</dd>
+        <dt>Магистраль</dt><dd>Ø76×3,5 на +5,0</dd>
+        <dt>Опуски</dt><dd>Ø57×3,5</dd>
+        <dt>Пожарные краны</dt><dd>ПК FH-1…FH-4</dd>
+        <dt>Высота ПК</dt><dd>+1,350</dd>
+        <dt>Испытания</dt><dd>гидравлика, промывка</dd>
+        <dt>Окраска</dt><dd>2 слоя</dd>
+      </dl></div>
+      <div class="card"><h3>Пожарная сигнализация</h3><p>Адресная система «Рубеж» R3: ППКОПУ R3-Рубеж-2ОП, дымовые ИП 212-64-R3, тепловые ИП 101-29-PR-R3, ручные ИПР 513-11-А-R3, пламени «Тюльпан». План по складу: I-DD-65156.</p></div>
+      <div class="card"><h3>Оповещение (СОУЭ / PAGA)</h3><p>Bosch Praesideo: контроллеры PRA-SCS, усилители 600 Вт, громкоговорители 6 Вт внутри и 25 Вт снаружи, кабель КПСЭСнг(А)-FRHF. План по складу: I-DD-65157 / 65194.</p></div>
+      <div class="card"><h3>Видеонаблюдение</h3><p>3 камеры Dahua 4 Мп (CAM 37, 38, 39) по периметру склада, шкаф ВН №12 600×600 с термостабилизацией, оптика до КПП. План C-DD-66579, MR SF-65069. Похоже на интерфейс, а не на объём склада.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ISSUES -->
+<section id="issues">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">08</span><h2>Противоречия → вопросы в Clarification Request</h2><p>Найдено при перекрёстной сверке документов. Формулировки на английском готовы для шаблона KCOI. Красное влияет на цену, жёлтое на проект.</p></div>
+    <div class="issues" id="issueList"></div>
+    <button type="button" class="copy" id="copyQ">Скопировать все вопросы (EN)</button>
+    <span class="note" id="copyMsg"></span>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section id="offer">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">09</span><h2>Что собрать к 20 ноября</h2><p>Состав технической заявки по структуре MR KCOI (на примере SF-65069). Перечень испытаний Rev.02 сверить с самим MRS из ZIP.</p></div>
+    <div class="g2">
+      <div class="card"><h3>Техническая часть</h3><ul class="check">
+        <li>Declaration of Compliance и List of Deviations (Annex A); при отсутствии отклонений — подписанный «Nil Deviations»</li>
+        <li>Расчёт каркаса по SP RK EN 1993-1-1 и EN 1998 с проверкой колонн на R15 без огнезащиты</li>
+        <li>Теплотехнический расчёт ограждения под +18 °C</li>
+        <li>Чертежи общего вида, схемы КМ, узлы опирания на анкеры М30/М20</li>
+        <li>Подбор ОВ, ЭО, ВК, противопожарного водопровода</li>
+        <li>Документы по Annex C (SDRS) и опросник (TBQ), если есть в Rev.02</li>
+        <li>Сертификаты: EAC / СТ-KZ, пожарные на сэндвич (НГ, EI, К0), декларации, паспорта</li>
+        <li>План качества, ITP, перечень испытаний с точками контроля заказчика</li>
+        <li>Антикоррозия: система покрытия и толщины по MR</li>
+        <li>Субпоставщики и места изготовления; минимум три референс-объекта</li>
+        <li>Документы на английском и русском</li>
+      </ul></div>
+      <div class="card"><h3>Коммерческая часть и сроки</h3><ul class="check">
+        <li>Цена по разделам: проект, металл, ограждение, ОВ, ЭО, ВК, доставка до Жанаозена, шеф-монтаж</li>
+        <li>График: проект → согласование → изготовление → поставка</li>
+        <li>Условия поставки и упаковки</li>
+        <li>Гарантия: в MR CCTV это 24 мес от пусконаладки или 36 мес от поставки, что раньше</li>
+        <li>Запасные части и специнструмент, если требуются</li>
+        <li>Оговорки по вопросам Q1–Q10 до получения ответов</li>
+      </ul>
+      <h3 style="margin-top:18px">Хронология пакета</h3>
+      <div class="timeline">
+        <div class="tl"><b>22.07</b><span>ВК В2</span></div>
+        <div class="tl"><b>28.07</b><span>расчёт EXDE00</span></div>
+        <div class="tl"><b>12.08</b><span>расчёт ОВ</span></div>
+        <div class="tl"><b>17.08</b><span>расчёт EXDE01</span></div>
+        <div class="tl"><b>25.08</b><span>MR CCTV</span></div>
+        <div class="tl"><b>27.09</b><span>КЖ</span></div>
+        <div class="tl"><b>21.10</b><span>ТЗ</span></div>
+        <div class="tl now"><b>12.11</b><span>MR Rev.02</span></div>
+        <div class="tl end"><b>20.11</b><span>подача</span></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCS -->
+<section id="docs">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">10</span><h2>Реестр папки</h2><p>Все 55 файлов, сгруппированы по дисциплинам. Префикс номеров: 2920-03-D-.</p></div>
+    <div class="filters" id="docFilters"></div>
+    <div class="tbl tall"><table><thead><tr><th>Раздел</th><th>Номер</th><th>Содержание</th><th>Для склада</th></tr></thead><tbody id="docBody"></tbody></table></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Собрано по папке «WPP MR WARM HOUSE REVISION 02» и письму KCOI от 12.11.2026. Цифры каркаса, нагрузок и инженерии взяты из документов; масса металла и площади ограждения — наша оценка. Сам MRS Rev.02 и приложения A–C в папке отсутствовали.</div>
+</footer>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+
+<script>
+/* ---------- countdown ---------- */
+(function(){
+  const end=new Date("2026-11-20T18:00:00+05:00").getTime();
+  const el=document.getElementById("countdown");
+  function tick(){
+    let s=Math.max(0,(end-Date.now())/1000);
+    const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);
+    el.textContent=s<=0?"срок вышел":d+" дн "+h+" ч "+String(m).padStart(2,"0")+" мин";
+  }
+  tick();setInterval(tick,30000);
+})();
+
+/* ---------- wind bars ---------- */
+(function(){
+  const z=[["Стена A",-1.9],["Стена B",-1.27],["Стена C",-0.79],["Стена D",1.15],["Стена E",-0.55],["Кровля F",-2.61],["Кровля G",-1.86],["Кровля H",-0.92],["Кровля I",-0.93],["Кровля J",0.182]];
+  const max=3, host=document.getElementById("windBars");
+  host.innerHTML=z.map(([n,v])=>{const w=Math.abs(v)/max*50;return `<div class="bar"><span>${n}</span><div class="track"><div class="fill ${v<0?"neg":"pos"}" style="width:${w}%"></div></div><span class="v">${v>0?"+":""}${v.toFixed(2).replace(".",",")}</span></div>`}).join("")+
+  `<div class="bar" style="color:var(--muted);font-size:11px"><span></span><div style="display:flex;justify-content:space-between;font-family:var(--f-mono)"><span>−3</span><span>0</span><span>+3</span></div><span></span></div>`;
+})();
+
+/* ---------- issues ---------- */
+const ISSUES=[
+ {id:"Q1",lvl:"crit",t:"Мощность щита ЩР3 не покрывает электроотопление",
+  p:"Щит ЩР3 рассчитан на 11,2 кВт установленной мощности с вводом 25 А. Только конвекторы дают 33,5 кВт, калорифер приточки ЭКВ-80-50-60 ещё 41–60 кВт, двигатели 4,7 кВт: всего около 80–100 кВт. В схеме ЩР3 упомянуты «конвектор 2 шт пом.1» и водонагреватель, которых нет в разделе ОВ склада: схема, похоже, взята от другого здания.",
+  q:"Electrical panel PS3 (2920-03-D-E-FB-63283) shows Pi = 11.2 kW / 25 A input, while HVAC (2920-03-D-V-RB-66010) requires ~33.5 kW electric convectors + 41.25–60 kW electric air heater + 4.7 kW motors. Please confirm the available supply capacity at the building, and whether the Supplier shall redesign PS3 and size the incoming cable.",
+  src:"E-FB-63283 · E-GA-63287 · V-RB-66010 · V-GA-66015"},
+ {id:"Q2",lvl:"crit",t:"ЛСТК в теме письма, горячий прокат в чертежах",
+  p:"Тема письма: «Lightweight thin-walled steel structures». В DM-62184 и расчёте CD-62222 каркас из горячекатаных двутавров 35К1 / 35Б2 и швеллеров 16П. От этого зависит технология, цена и проверка R15 без огнезащиты: тонкостенный профиль её почти не проходит.",
+  q:"The RFQ subject refers to 'lightweight thin-walled steel structures', whereas drawings 2920-03-D-A-DM-62184 and calculation 2920-03-D-A-CD-62222 use hot-rolled sections (35K1 columns, 35B2 rafters, 16P purlins). Please confirm which structural system is required, and whether an LSTK alternative is acceptable if R15 without fire protection is demonstrated.",
+  src:"письмо · DM-62184 · CD-62222 · ТЗ"},
+ {id:"Q3",lvl:"warn",t:"Уклон кровли и высоты не совпадают",
+  p:"Расчёт: уклон 6° (10 %), опирание ригеля на колонну 5,7 м, высота в ветровом расчёте 6,0 м. Архитектура: уклон 16 %, карниз 5,930, конёк 7,435.",
+  q:"Roof geometry differs between CD-62222 (6° / 10 %, eaves bearing at +5.700) and DM-62183/62185 (16 %, eaves +5.930, ridge +7.435). Which geometry governs the Supplier's design?",
+  src:"CD-62222 §5 · DM-62183 · DM-62185"},
+ {id:"Q4",lvl:"warn",t:"Шаг прогонов 1,2 м против 1,6 м",
+  p:"В расчёте прогоны кровли с шагом 1,2 м, в разрезе DM-62184 швеллер 16П с шагом 1,6 м. Разница около 1,4 т металла.",
+  q:"Roof purlin spacing is 1.2 m in CD-62222 and 1.6 m (16P channels) in DM-62184. Please confirm, or confirm that the Supplier may optimise spacing subject to its own calculation.",
+  src:"CD-62222 §5 · DM-62184"},
+ {id:"Q5",lvl:"crit",t:"Модульное здание на закладных или каркас на анкерах",
+  p:"Примечания DM-62183: «полностью сборное модульное здание», металлоконструкции приваривать к закладным фундаментной плиты, пол с утеплителем 100 мм по профлисту. КЖ: столбчатые фундаменты Fm-1 и Fm-2 с анкерами М30×900 и М20×600 и плита по грунту. Чертежи DM лежат в папке «NOT ISSUED TO THE CPY».",
+  q:"DM-62183 notes describe a prefabricated modular building welded to slab embedded plates with an insulated steel-deck floor, while RC drawings 62307–62309 show pad foundations with M30×900 / M20×600 anchor bolts. Please confirm the column-base interface, who supplies anchor bolts and templates, and the status of DM-62183/84/85 ('not issued to CPY').",
+  src:"DM-62183 · DB-62307 · DB-62308 · DB-62309"},
+ {id:"Q6",lvl:"warn",t:"Площади и назначение помещений",
+  p:"Экспликация АР: 3 помещения, 155,2 м². План силового ЭО: гараж 210,14 м² плюс 3 склада, итого 360,14 м². ОВ называет здание «склад с гаражом». Склад масла влияет на категорию: в ТЗ категория C.",
+  q:"Room schedule: DM-62183 lists 3 rooms (155.2 m²), E-DD-63285 lists a 210.14 m² garage plus 3 stores (360.14 m²). Please confirm room functions, the garage use (vehicles inside?), and fire hazard category C for the oil storage.",
+  src:"DM-62183 · E-DD-63284 · E-DD-63285 · V-RB-66010"},
+ {id:"Q7",lvl:"warn",t:"Расчётная наружная температура −18 °C или −14,9 °C",
+  p:"ТЗ даёт −18,0 °C, раздел ОВ и КЖ −14,9 °C. От этого зависит толщина панелей и мощность отопления.",
+  q:"Design outdoor temperature: −18.0 °C in the Technical Requirements vs −14.9 °C in HVAC and RC drawings. Which value shall be used for the thermal calculation and heating sizing?",
+  src:"ТЗ 21.10.26 · V-RB-66010 · RB-62305"},
+ {id:"Q8",lvl:"warn",t:"Тип и размер ворот не заданы",
+  p:"На фасаде оси 1 три проёма около 3,0×3,0 м, один с калиткой. Обозначены как «двери металлические утеплённые ГОСТ 31173». Секционные, распашные, привод?",
+  q:"Please specify the three openings on axis 1 (approx. 3.0 × 3.0 m): type (sectional / swing), insulation, operation (manual / electric) and wicket door requirements.",
+  src:"DM-62183 · DM-62185"},
+ {id:"Q9",lvl:"low",t:"Что из слаботочки входит в объём",
+  p:"В пакет вложены пожарная сигнализация, СОУЭ и MR на видеонаблюдение по всей площадке. Непонятно, поставляет ли их изготовитель склада или только оставляет трассы и закладные.",
+  q:"Annex 1 includes fire alarm (Rubezh R3), PAGA (Bosch) and CCTV (MR 2920-03-D-I-SF-65069) drawings. Please confirm whether these systems are in the Warm Warehouse Supplier's scope or interface only (cable routes / provisions).",
+  src:"I-DD-65156 · I-DD-65157 · C-DD-66579 · I-SF-65069"},
+ {id:"Q10",lvl:"low",t:"В папке нет самого MR и приложений",
+  p:"Скачанная папка содержит только ANNEX 1. MRS Rev.02 с перечнем испытаний и сертификатов, Annex A, B, C и шаблон вопросов нужно достать из ZIP на SharePoint до подготовки ответа.",
+  q:"For completeness: please confirm the full list of documents in the Rev.02 ZIP (MRS, Annexes A, B, C, Bidder Clarification Request Template) so we can verify we have the complete package.",
+  src:"письмо 12.11.2026"}
+];
+(function(){
+  const host=document.getElementById("issueList");
+  const lab={crit:"цена",warn:"проект",low:"пакет"};
+  host.innerHTML=ISSUES.map(i=>`<article class="issue ${i.lvl}"><div class="id">${i.id}<br><span class="chip ${i.lvl}">${lab[i.lvl]}</span></div><div><h3>${i.t}</h3><p>${i.p}</p><div class="q">${i.q}</div><div class="src">${i.src}</div></div></article>`).join("");
+  document.getElementById("copyQ").addEventListener("click",async()=>{
+    const txt=ISSUES.map((i,n)=>`${n+1}. ${i.q}`).join("\n\n");
+    const msg=document.getElementById("copyMsg");
+    try{await navigator.clipboard.writeText(txt);msg.textContent=" скопировано: "+ISSUES.length+" вопросов";}
+    catch(e){msg.textContent=" не удалось скопировать: выделите текст вопросов вручную";}
+  });
+})();
+
+/* ---------- document registry ---------- */
+const DOCS=[
+ ["Конструкции","A-CD-62222","Расчёт каркаса и фундаментов, ЛИРА-САПР, 58 л., EXDE01 от 17.08.26","ключевой"],
+ ["Конструкции","A-RB-62304","КЖ. Общие данные, ведомость листов",""],
+ ["Конструкции","A-RB-62305","КЖ. Общие указания, климат, инженерно-геологический разрез",""],
+ ["Конструкции","A-DB-62306","Схема котлована, разрез 1-1",""],
+ ["Конструкции","A-DB-62307","Схема расположения фундаментов: Fm-1 × 10, Fm-2 × 4","интерфейс"],
+ ["Конструкции","A-DB-62308","Фундамент Fm-1 2000×3000, анкеры М30×900","интерфейс"],
+ ["Конструкции","A-DB-62309","Фундамент Fm-2 1500×1500, анкеры М20×600","интерфейс"],
+ ["Конструкции","A-DB-62310","Плита на отм. ±0,000, разрезы, узлы",""],
+ ["Конструкции","A-DB-62311","Фундаментная плита, армирование, подливка",""],
+ ["Конструкции","A-DB-62312","Пандус Pn1, отмостка",""],
+ ["Архитектура","A-DM-62183","План на 0,000 и план кровли (не выдан заказчику)","ключевой"],
+ ["Архитектура","A-DM-62184","Разрезы 1-1, 2-2: профили 35К1 / 35Б2 / 16П, окна ОК-1","ключевой"],
+ ["Архитектура","A-DM-62185","Фасады, ведомость отделки, RAL","ключевой"],
+ ["Водопровод","A-RB-62251","Противопожарный водопровод В2. Общие данные",""],
+ ["Водопровод","A-DD-62252","В2. План на 0,000",""],
+ ["Водопровод","A-FF-62253","В2. Аксонометрическая схема",""],
+ ["Водопровод","A-EB-62254","В2. Спецификация, 3 л.",""],
+ ["Электрика","E-RB-63282","ЭО. Общие данные",""],
+ ["Электрика","E-FB-63283","Принципиальная схема ЩР3","вопрос Q1"],
+ ["Электрика","E-DD-63284","План освещения, 75 лк",""],
+ ["Электрика","E-DD-63285","План силового ЭО, заземление, экспликация 360,14 м²",""],
+ ["Электрика","E-GA-63287","Спецификация ЭО, 2 л.",""],
+ ["ОВ","V-RB-66010","ОВ. Общие данные, характеристика систем","ключевой"],
+ ["ОВ","V-DD-66011","План отопления",""],
+ ["ОВ","V-DD-66012","План вентиляции",""],
+ ["ОВ","V-DD-66014","Схемы систем вентиляции",""],
+ ["ОВ","V-GA-66015","Спецификация ОВ, 4 л.",""],
+ ["ОВ","V-CH-66036","Расчёты ОВ всех вспомогательных зданий, 24 л.",""],
+ ["Слаботочка","I-RB-65007","Пожарная сигнализация. Ведомость листов",""],
+ ["Слаботочка","I-RB-65151","ПС. Общие указания",""],
+ ["Слаботочка","I-RB-65171","ПС. Общие указания, карта сигналов в SCADA",""],
+ ["Слаботочка","I-FB-65008","ПС. Структурная схема, перечень материалов",""],
+ ["Слаботочка","I-FB-65173","ПС. Структурная схема (вариант)",""],
+ ["Слаботочка","I-DQ-65009","ПС. Условные обозначения",""],
+ ["Слаботочка","I-DQ-65172","ПС. Условные обозначения (вариант)",""],
+ ["Слаботочка","I-FP-65174","ПС. Схема подключения внешних проводок",""],
+ ["Слаботочка","I-GA-65013","ПС. Спецификация «Рубеж»",""],
+ ["Слаботочка","I-DD-65156","ПС. План тёплого склада","склад"],
+ ["Слаботочка","I-RB-65186","СОУЭ. Ведомость листов",""],
+ ["Слаботочка","I-RB-65187","СОУЭ. Общие указания",""],
+ ["Слаботочка","I-DQ-65188","СОУЭ. Условные обозначения",""],
+ ["Слаботочка","I-FB-65189","СОУЭ. Структурная схема Bosch",""],
+ ["Слаботочка","I-FP-65169","Речевое оповещение. Схема подключения",""],
+ ["Слаботочка","I-FP-65190","СОУЭ. Схема подключения внешних проводок",""],
+ ["Слаботочка","I-FP-65170","Схема разварки ВОК (ПС)",""],
+ ["Слаботочка","I-FP-65197","Схема разварки ВОК (СОУЭ)",""],
+ ["Слаботочка","I-EP-65198","СОУЭ. Кабельный журнал",""],
+ ["Слаботочка","I-GA-65199","СОУЭ. Спецификация",""],
+ ["Слаботочка","I-DD-65157","СОУЭ. План тёплого склада","склад"],
+ ["Слаботочка","I-DD-65194","СОУЭ. План тёплого склада (вариант)","склад"],
+ ["Слаботочка","I-DD-65196","Площадка ВСП. Трассы интерфейсных кабелей",""],
+ ["Слаботочка","I-SF-65069","MR на видеонаблюдение ВСП, 32 л., EXDE01 25.08.26","образец MR"],
+ ["Связь","C-DD-66579","Видеонаблюдение склада: CAM 37–39, шкаф №12","склад"],
+ ["Общее","Technical_Specification","Main Technical Requirements, docx, 21.10.26","ключевой"],
+ ["Общее","MDR 09.10.2026","Реестр документов проекта 526H00, xlsx",""]
+];
+(function(){
+  const body=document.getElementById("docBody"),flt=document.getElementById("docFilters");
+  const groups=["Все",...new Set(DOCS.map(d=>d[0]))];
+  function render(g){
+    body.innerHTML=DOCS.filter(d=>g==="Все"||d[0]===g).map(d=>`<tr><td>${d[0]}</td><td class="mono">${d[1]}</td><td>${d[2]}</td><td>${d[3]?`<span class="chip ${d[3]==="ключевой"?"warn":d[3].startsWith("вопрос")?"crit":"info"}">${d[3]}</span>`:""}</td></tr>`).join("");
+    [...flt.children].forEach(b=>b.classList.toggle("on",b.dataset.g===g));
+  }
+  flt.innerHTML=groups.map(g=>`<button type="button" data-g="${g}">${g} ${g==="Все"?DOCS.length:DOCS.filter(d=>d[0]===g).length}</button>`).join("");
+  flt.addEventListener("click",e=>{const b=e.target.closest("button");if(b)render(b.dataset.g)});
+  render("Все");
+})();
+</script>
+
+<script type="module">
+import * as THREE from "three";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+import {CSS2DRenderer,CSS2DObject} from "three/addons/renderers/CSS2DRenderer.js";
+
+const host=document.getElementById("c3d");
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const L=23.6,W=15.8,E=5.93,SL=0.16,R=E+W/2*SL;
+const AX=[0,6,11.6,17.6,23.6];          // оси 1..5 по длине
+const P=(x,y,h)=>new THREE.Vector3(x-L/2,h,y-W/2); // x вдоль оси А, y поперёк (А=0, Б=15.8)
+
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.localClippingEnabled=true;
+renderer.shadowMap.enabled=true;
+host.appendChild(renderer.domElement);
+const lr=new CSS2DRenderer();lr.domElement.style.position="absolute";lr.domElement.style.inset="0";lr.domElement.style.pointerEvents="none";host.appendChild(lr.domElement);
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x0b1118);
+scene.fog=new THREE.Fog(0x0b1118,60,140);
+const cam=new THREE.PerspectiveCamera(40,1,0.1,400);
+cam.position.set(30,20,32);
+const ctl=new OrbitControls(cam,renderer.domElement);
+ctl.target.set(0,3,0);ctl.enableDamping=true;ctl.maxPolarAngle=Math.PI*0.49;ctl.autoRotate=!reduce;ctl.autoRotateSpeed=0.5;
+
+scene.add(new THREE.HemisphereLight(0xcfe6ff,0x1a1208,0.9));
+const sun=new THREE.DirectionalLight(0xffffff,1.6);sun.position.set(25,40,18);sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-25,right:25,top:25,bottom:-25,near:1,far:120});
+scene.add(sun);
+
+// ground
+const grid=new THREE.GridHelper(80,80,0x2c4052,0x1a2733);grid.position.y=-0.21;scene.add(grid);
+const gnd=new THREE.Mesh(new THREE.PlaneGeometry(80,80),new THREE.MeshStandardMaterial({color:0x2a2418,roughness:1,transparent:true,opacity:0.35}));
+gnd.rotation.x=-Math.PI/2;gnd.position.y=-0.22;gnd.receiveShadow=true;scene.add(gnd);
+
+const clipPlane=new THREE.Plane(new THREE.Vector3(-1,0,0),100);
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:0.55,metalness:0.35,clippingPlanes:[clipPlane],clipShadows:true,side:THREE.DoubleSide},o));
+const MAT={
+ fnd:M(0x8a8f96,{metalness:0,roughness:0.9}), slab:M(0x6d737a,{metalness:0,roughness:0.95}),
+ col:M(0xff8a3d), raf:M(0xffb35c), pur:M(0x6cc3e0), girt:M(0x4fa0b8), brace:M(0xe46fb2), post:M(0xff6a2a),
+ wall:M(0xe8d9b5,{metalness:0.2,roughness:0.6}), roof:M(0x2f5e4a,{metalness:0.3,roughness:0.5}),
+ part:M(0xd0d4d8,{metalness:0.1}), gate:M(0x5b6066), glass:M(0x9fd3ef,{transparent:true,opacity:0.45,metalness:0.1}),
+ heat:M(0xf0f0f0,{metalness:0.1}), duct:M(0xb8c2cc,{metalness:0.6}), fire:M(0xd8302f), cam:M(0x222222), light:new THREE.MeshBasicMaterial({color:0xfff6d8,clippingPlanes:[clipPlane]}),
+ panel:M(0x9aa3ab), bolt:M(0xcfd6dd,{metalness:0.9})
+};
+const ENVELOPE=[MAT.wall,MAT.roof,MAT.part,MAT.gate];
+
+const root=new THREE.Group();scene.add(root);
+const LAYERS={};
+function layer(key,name,color,expl){const g=new THREE.Group();g.userData={key,name,color,expl,base:new THREE.Vector3()};root.add(g);LAYERS[key]=g;return g;}
+function add(g,mesh,info){mesh.castShadow=true;mesh.receiveShadow=true;mesh.userData.info=info;g.add(mesh);return mesh;}
+
+// I-beam profile
+function iGeo(h,b,tw,tf,len){
+  const s=new THREE.Shape();
+  s.moveTo(-b/2,-h/2);s.lineTo(b/2,-h/2);s.lineTo(b/2,-h/2+tf);s.lineTo(tw/2,-h/2+tf);s.lineTo(tw/2,h/2-tf);s.lineTo(b/2,h/2-tf);
+  s.lineTo(b/2,h/2);s.lineTo(-b/2,h/2);s.lineTo(-b/2,h/2-tf);s.lineTo(-tw/2,h/2-tf);s.lineTo(-tw/2,-h/2+tf);s.lineTo(-b/2,-h/2+tf);s.closePath();
+  const g=new THREE.ExtrudeGeometry(s,{depth:len,bevelEnabled:false});g.translate(0,0,-len/2);return g;
+}
+function bar(geo,mat,a,b,upZ){
+  const m=new THREE.Mesh(geo,mat);m.position.copy(a).add(b).multiplyScalar(0.5);
+  const d=b.clone().sub(a).normalize();
+  if(upZ||Math.abs(d.y)>0.98)m.up.set(0,0,1);m.lookAt(b);return m;
+}
+const boxBar=(s,t,a,b,mat,upZ)=>bar(new THREE.BoxGeometry(s,t,a.distanceTo(b)),mat,a,b,upZ);
+const rafterY=y=>E+(W/2-Math.abs(y-W/2))*SL;
+
+/* ---- 1. Фундаменты ---- */
+const gF=layer("fnd","Фундаменты Fm-1 / Fm-2",0x8a8f96,new THREE.Vector3(0,-4,0));
+const fm1={t:"Фундамент Fm-1",d:{"Подошва":"2000×3000×400","Подколонник":"700×700×1000","Высота":"1400 мм","Бетон":"C30/37, сульфатост.","Анкеры":"М30×900","Кол-во":"10 шт","Объём работ":"не входит"},src:"КЖ: A-DB-62307, 62308"};
+const fm2={t:"Фундамент Fm-2 (фахверк)",d:{"Подошва":"1500×1500×400","Подколонник":"500×500×1000","Анкеры":"М20×600","Кол-во":"4 шт","Объём работ":"не входит"},src:"КЖ: A-DB-62307, 62309"};
+const anchorInfo={t:"Анкерные болты",d:{"Fm-1":"М30×900, ГОСТ 24379.1","Fm-2":"М20×600","Подливка":"безусадочная","Вопрос":"кто поставляет — Q5"},src:"A-DB-62308, 62309"};
+AX.forEach(x=>[0,W].forEach(y=>{
+  const p=P(x,y,0);
+  add(gF,new THREE.Mesh(new THREE.BoxGeometry(2,0.4,3),MAT.fnd),fm1).position.set(p.x,-1.5,p.z);
+  add(gF,new THREE.Mesh(new THREE.BoxGeometry(0.7,1.0,0.7),MAT.fnd),fm1).position.set(p.x,-0.8,p.z);
+  for(const dx of[-0.2,0.2])for(const dz of[-0.2,0.2])add(gF,new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.5,6),MAT.bolt),anchorInfo).position.set(p.x+dx,-0.1,p.z+dz);
+}));
+[[0,5.4],[0,10.4],[L,5.4],[L,10.4]].forEach(([x,y])=>{
+  const p=P(x,y,0);
+  add(gF,new THREE.Mesh(new THREE.BoxGeometry(1.5,0.4,1.5),MAT.fnd),fm2).position.set(p.x,-1.5,p.z);
+  add(gF,new THREE.Mesh(new THREE.BoxGeometry(0.5,1.0,0.5),MAT.fnd),fm2).position.set(p.x,-0.8,p.z);
+});
+const gS=layer("slab","Плита пола и пандусы",0x6d737a,new THREE.Vector3(0,-2,0));
+add(gS,new THREE.Mesh(new THREE.BoxGeometry(L-0.3,0.2,W-0.3),MAT.slab),{t:"Плита пола ±0,000",d:{"Бетон":"C30/37","Основание":"ПГС, Kупл ≥ 0,98","Утепление торцов":"ТехноПЛЕКС 50 мм","Площадь":"≈ 360 м²"},src:"A-DB-62310, 62311"}).position.set(0,-0.1,0);
+[[2.4,5.4],[6.4,9.4],[10.4,13.4]].forEach(([a,b])=>{
+  const geo=new THREE.BoxGeometry(3,0.2,(b-a)+0.6);const m=add(gS,new THREE.Mesh(geo,MAT.slab),{t:"Пандус Pn1",d:{"Уклон":"10 %","Бетон":"C30/37","Сетка":"Вр-1 150×150"},src:"A-DB-62312"});
+  const p=P(0,(a+b)/2,0);m.position.set(p.x-1.5,-0.25,p.z);m.rotation.z=-Math.atan(0.1);
+});
+
+/* ---- 2. Колонны ---- */
+const gC=layer("col","Колонны 35К1",0xff8a3d,new THREE.Vector3(0,0,0));
+const colGeo=iGeo(0.343,0.348,0.010,0.015,E-0.2);
+AX.forEach((x,i)=>[0,W].forEach(y=>{
+  const m=bar(colGeo,MAT.col,P(x,y,0),P(x,y,E-0.2),true);
+  add(gC,m,{t:"Колонна рамы, ось "+(i+1)+" / ряд "+(y?"Б":"А"),d:{"Профиль":"двутавр 35К1","Сталь":"C245","Высота":"≈ 5,7–5,9 м","Масса":"≈ 109,7 кг/м","База":"жёстко в плоскости рамы","Огнестойкость":"R15 без защиты","Кол-во":"10 шт"},src:"DM-62184 · CD-62222 §5"});
+}));
+/* ---- 3. Ригели ---- */
+const gR=layer("raf","Ригели 35Б2",0xffb35c,new THREE.Vector3(0,0.6,0));
+AX.forEach((x,i)=>{
+  for(const [y0,y1] of[[0,W/2],[W,W/2]]){
+    const a=P(x,y0,rafterY(y0)-0.2),b=P(x,y1,rafterY(y1)-0.2);
+    add(gR,bar(iGeo(0.349,0.155,0.0065,0.010,a.distanceTo(b)),MAT.raf,a,b),{t:"Ригель рамы, ось "+(i+1),d:{"Профиль":"двутавр 35Б2","Пролёт":"15,8 м (2 × 7,9)","Уклон":"16 % (АР) / 10 % (расчёт)","Узел на колонне":"жёсткий","Масса":"≈ 43,3 кг/м"},src:"DM-62184 · CD-62222"});
+  }
+});
+/* ---- 4. Фахверк ---- */
+const gP=layer("post","Фахверк и ригели стен",0xff6a2a,new THREE.Vector3(0,0,0));
+[[0,5.4],[0,10.4],[L,5.4],[L,10.4]].forEach(([x,y])=>{
+  add(gP,boxBar(0.14,0.14,P(x,y,0),P(x,y,rafterY(y)-0.35),MAT.post,true),{t:"Стойка торцевого фахверка",d:{"Профиль":"труба 140×5","Фундамент":"Fm-2","Ветер":"передаёт на связи покрытия через распорки"},src:"DM-62184 · КЖ-62307"});
+});
+for(const h of[1.2,2.4,3.0,4.2,5.4]){
+  for(const y of[0,W]){add(gP,boxBar(0.14,0.14,P(0,y,h),P(L,y,h),MAT.girt),{t:"Ригель продольной стены",d:{"Профиль":"труба 140×5 (DM) / швеллер (расчёт)","Шаг":"1,2–1,4 м","Отметка":h.toFixed(1)+" м"},src:"DM-62184 · CD-62222"});}
+  for(const x of[0,L]){
+    const segs=x===0?[[0,2.4],[5.4,6.4],[9.4,10.4],[13.4,W]]:[[0,W]];
+    const segs2=x===0&&h>3.0?[[0,W]]:segs;
+    segs2.forEach(([a,b])=>add(gP,boxBar(0.14,0.14,P(x,a,h),P(x,b,h),MAT.girt),{t:"Ригель торцевой стены",d:{"Профиль":"труба 140×5","Отметка":h.toFixed(1)+" м"},src:"DM-62184"}));
+  }
+}
+/* ---- 5. Прогоны ---- */
+const gU=layer("pur","Прогоны 16П",0x6cc3e0,new THREE.Vector3(0,2.2,0));
+for(let s=0.15;s<W/2;s+=1.2){
+  for(const y of[s,W-s]){
+    const h=rafterY(y)-0.2+0.175+0.08;
+    add(gU,boxBar(0.064,0.16,P(-0.2,y,h),P(L+0.2,y,h),MAT.pur),{t:"Прогон кровли",d:{"Профиль":"швеллер 16П","Шаг":"1,2 м (расчёт) / 1,6 м (DM)","Работа":"косой изгиб, ось повёрнута на 6°","Длина линии":"23,6 м","Масса":"14,2 кг/м"},src:"CD-62222 §5 · DM-62184"});
+  }
+}
+/* ---- 6. Связи ---- */
+const gB=layer("brace","Связи и распорки 120×4",0xe46fb2,new THREE.Vector3(0,0,0));
+const bInfo={t:"Вертикальная связь",d:{"Профиль":"труба 120×4","Где":"крайние шаги 1–2 и 4–5 по рядам А и Б","Работа":"продольная устойчивость, ветер в торец"},src:"DM-62184 · CD-62222 §5"};
+for(const [x0,x1] of[[0,6],[17.6,23.6]])for(const y of[0.25,W-0.25]){
+  add(gB,boxBar(0.12,0.12,P(x0,y,0.3),P(x1,y,E-0.4),MAT.brace),bInfo);
+  add(gB,boxBar(0.12,0.12,P(x1,y,0.3),P(x0,y,E-0.4),MAT.brace),bInfo);
+}
+const hInfo={t:"Горизонтальная связь покрытия",d:{"Профиль":"труба 120×4","Где":"крайние шаги","Работа":"передаёт ветер с фахверка"},src:"CD-62222 §5"};
+for(const [x0,x1] of[[0,6],[17.6,23.6]])for(const [y0,y1] of[[0.3,W/2-0.3],[W-0.3,W/2+0.3]]){
+  add(gB,boxBar(0.1,0.1,P(x0,y0,rafterY(y0)-0.05),P(x1,y1,rafterY(y1)-0.05),MAT.brace),hInfo);
+  add(gB,boxBar(0.1,0.1,P(x1,y0,rafterY(y0)-0.05),P(x0,y1,rafterY(y1)-0.05),MAT.brace),hInfo);
+}
+for(const y of[0,W])add(gB,boxBar(0.12,0.12,P(0,y,E-0.25),P(L,y,E-0.25),MAT.brace),{t:"Распорка по колоннам",d:{"Профиль":"труба 120×4","Узлы":"шарнирные"},src:"DM-62184"});
+add(gB,boxBar(0.12,0.12,P(0,W/2,R-0.15),P(L,W/2,R-0.15),MAT.brace),{t:"Коньковая распорка",d:{"Профиль":"труба 120×4"},src:"DM-62184"});
+
+/* ---- 7. Стены ---- */
+const gW=layer("wall","Стены: сэндвич 100 мм",0xe8d9b5,null);
+function wallMesh(outline,holes,info){
+  const s=new THREE.Shape(outline.map(p=>new THREE.Vector2(...p)));
+  holes.forEach(([u0,v0,u1,v1])=>{const h=new THREE.Path();h.moveTo(u0,v0);h.lineTo(u1,v0);h.lineTo(u1,v1);h.lineTo(u0,v1);h.closePath();s.holes.push(h);});
+  const m=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:0.1,bevelEnabled:false}),MAT.wall);
+  m.userData.info=info;m.castShadow=true;m.receiveShadow=true;return m;
+}
+const winX=[2.25,8.05,13.85,19.85].map(x=>[x,3.0,x+1.46,4.18]);
+const wInfo=(n,a)=>({t:"Стеновая панель, "+n,d:{"Тип":"трёхслойный сэндвич","Утеплитель":"минвата базальт, НГ","Толщина":"100 мм","Облицовка":"оцинк. 0,5 мм, полимер","Цвет":"RAL 1015 светло-бежевый","Площадь":a,"Требование":"EI15, теплотехнический расчёт — поставщик"},src:"DM-62183, 62185 · ТЗ"});
+const wA=wallMesh([[0,0],[L,0],[L,E],[0,E]],winX,wInfo("ряд А","≈ 140 м²"));wA.position.set(-L/2,0,-W/2-0.3);
+const wB=wallMesh([[0,0],[L,0],[L,E],[0,E]],winX,wInfo("ряд Б","≈ 140 м²"));wB.position.set(-L/2,0,W/2+0.2);
+const gableOut=[[0,0],[W,0],[W,E],[W/2,R],[0,E]];
+const w1=wallMesh(gableOut,[[2.4,0,5.4,3.0],[6.4,0,9.4,3.0],[10.4,0,13.4,3.0]],wInfo("торец ось 1 (въезды)","≈ 77 м² нетто"));w1.rotation.y=-Math.PI/2;w1.position.set(-L/2-0.2,0,-W/2);
+const w5=wallMesh(gableOut,[2.77,7.17,11.57].map(u=>[u,3.0,u+1.46,4.18]),wInfo("торец ось 5","≈ 99 м²"));w5.rotation.y=-Math.PI/2;w5.position.set(L/2+0.3,0,-W/2);
+w1.userData.ex=new THREE.Vector3(-4,0,0);w5.userData.ex=new THREE.Vector3(4,0,0);wA.userData.ex=new THREE.Vector3(0,0,-4);wB.userData.ex=new THREE.Vector3(0,0,4);
+[wA,wB,w1,w5].forEach(m=>{m.userData.base=m.position.clone();gW.add(m)});
+// windows glass
+const gO=layer("open","Окна, ворота, двери",0x9fd3ef,null);
+const glassInfo={t:"Окно ОК-1",d:{"Размер":"1460×1180","Низ":"+3,000","Тип":"металлопластик, двойной стеклопакет","Кол-во":"11 шт","Норма":"ГОСТ 30674-2023"},src:"DM-62184, 62185"};
+winX.forEach(([x0,v0,x1,v1])=>{for(const y of[-0.25,W+0.25]){add(gO,new THREE.Mesh(new THREE.BoxGeometry(1.46,1.18,0.03),MAT.glass),glassInfo).position.copy(P((x0+x1)/2,y,(v0+v1)/2));}});
+[2.77,7.17,11.57].forEach(u=>add(gO,new THREE.Mesh(new THREE.BoxGeometry(0.03,1.18,1.46),MAT.glass),glassInfo).position.copy(P(L+0.25,u+0.73,3.59)));
+[[2.4,5.4],[6.4,9.4],[10.4,13.4]].forEach(([a,b],i)=>{
+  add(gO,new THREE.Mesh(new THREE.BoxGeometry(0.06,3.0,3.0),MAT.gate),{t:"Въезд "+(i+1)+", ось 1",d:{"Проём":"≈ 3,0×3,0 м","Тип":"не задан (вопрос Q8)","Обозначение":"Type 5, утеплённые, ГОСТ 31173","Цвет":"RAL 7025"+(i===2?"; с калиткой":"")},src:"DM-62183, 62185"}).position.copy(P(-0.15,(a+b)/2,1.5));
+});
+/* ---- 8. Перегородки ---- */
+const gI=layer("part","Перегородки складов",0xd0d4d8,null);
+const pInfo={t:"Перегородка",d:{"Предел":"EI15","Отделяет":"склады реагентов и масла","Двери":"из гаража / склада стеллажей"},src:"DM-62183"};
+const pX=13.5;
+const part=(a,b,h)=>add(gI,new THREE.Mesh(new THREE.BoxGeometry(...h),MAT.part),pInfo).position.copy(P(a,b,E/2));
+part(pX,2.6/2,[0.1,E,2.6]);part(pX,(3.6+6.3)/2,[0.1,E,2.7]);part(pX,(7.3+10.25)/2,[0.1,E,2.95]);
+part((pX+L)/2,5.15,[L-pX,E,0.1]);part((pX+L)/2,10.25,[L-pX,E,0.1]);
+/* ---- 9. Кровля ---- */
+const gK=layer("roof","Кровля: сэндвич 150 мм",0x2f5e4a,new THREE.Vector3(0,5,0));
+const a=Math.atan(SL),half=W/2/Math.cos(a)+0.25;
+for(const side of[-1,1]){
+  const m=add(gK,new THREE.Mesh(new THREE.BoxGeometry(L+0.4,0.15,half),MAT.roof),{t:"Кровельная панель",d:{"Тип":"сэндвич, минвата","Толщина":"150 мм","Покрытие":"профлист Н21-1000-0,7, RAL 6029","Уклон":"16 %","Конёк":"+7,435","Площадь скатов":"≈ 389 м²"},src:"DM-62183, 62184, 62185"});
+  const yc=W/2+side*(W/4+0.12);
+  m.position.copy(P(L/2,yc,rafterY(yc)-0.2+0.175+0.16+0.12));m.rotation.x=side<0?-a:a;
+}
+/* ---- 10. Инженерия ---- */
+const gM=layer("mep","Инженерия: ОВ, ЭО, ВК, СС",0xd8302f,null);
+const conv=(x,y,kw,room)=>add(gM,new THREE.Mesh(new THREE.BoxGeometry(y===0.35||y===W-0.35?0.9:0.12,0.45,y===0.35||y===W-0.35?0.12:0.9),MAT.heat),{t:"Электроконвектор ЭВУБ-"+kw,d:{"Мощность":kw+" кВт","Помещение":room,"Всего":"15 шт · 33,5 кВт","Управление":"терморегулятор"},src:"V-RB-66010 · E-DD-63285"}).position.copy(P(x,y,0.35));
+[[2,0.35],[7,0.35],[11,0.35],[2,W-0.35],[7,W-0.35],[11,W-0.35],[16,W-0.35],[20,W-0.35]].forEach(([x,y],i)=>conv(x,y,"2,5",i<6?"гараж":"склад стеллажей"));
+[[0.35,1.2],[0.35,14.6]].forEach(([x,y])=>{add(gM,new THREE.Mesh(new THREE.BoxGeometry(0.12,0.45,0.9),MAT.heat),{t:"Электроконвектор ЭВУБ-2,5",d:{"Мощность":"2,5 кВт","Помещение":"гараж"},src:"V-RB-66010"}).position.copy(P(x,y,0.35));});
+[[16,0.35,"2,0","склад масла"],[20,0.35,"2,0","склад масла"],[L-0.35,2.6,"1,5","склад масла"],[L-0.35,7.7,"2,0","склад реагентов"],[pX+0.3,7.7,"1,0","склад реагентов"]].forEach(([x,y,k,r])=>{
+  add(gM,new THREE.Mesh(new THREE.BoxGeometry(x>L-1||x<pX+1?0.12:0.9,0.45,x>L-1||x<pX+1?0.9:0.12),MAT.heat),{t:"Электроконвектор ЭВУБ-"+k,d:{"Мощность":k+" кВт","Помещение":r},src:"V-RB-66010 · E-DD-63285"}).position.copy(P(x,y,0.35));
+});
+// АHU П1
+add(gM,new THREE.Mesh(new THREE.BoxGeometry(1.96,0.5,0.8),MAT.duct),{t:"Приточная установка П1",d:{"Расход":"3105 м³/ч","Напор":"473 Па","Вентилятор":"Канал-ПКВ-80-50, 2,8 кВт","Калорифер":"Канал-ЭКВ-80-50-60, электрический","Тепло":"41,25 кВт (ОВ)","Фильтр":"G4","Автоматика":"ШСАУ"},src:"V-RB-66010 · V-GA-66015"}).position.copy(P(21.5,13.6,4.9));
+add(gM,boxBar(0.4,0.4,P(1.2,12.8,5.0),P(20.4,12.8,5.0),MAT.duct),{t:"Приточный воздуховод",d:{"Сталь":"оцинк. 0,6 мм, класс Н","Сечения":"Ø250…Ø400"},src:"V-GA-66015"});
+[["В1","гараж / стеллажи",2415,"ПКВ-60-30-4, 1,7 кВт",[0.4,13.2,5.1]],["В2","склад реагентов",315,"ВЕНТ-160, 0,1 кВт",[L-0.4,9.0,5.1]],["В3","склад масла",315,"ВЕНТ-160, 0,1 кВт",[L-0.4,1.2,5.1]]].forEach(([n,r,q,t,p])=>{
+  const m=add(gM,new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.3,20),MAT.duct),{t:"Вытяжной вентилятор "+n,d:{"Помещение":r,"Расход":q+" м³/ч","Тип":t},src:"V-RB-66010"});m.position.copy(P(...p));m.rotation.z=Math.PI/2;
+});
+// fire water
+const fwInfo={t:"Противопожарный водопровод В2",d:{"Магистраль":"Ø76×3,5 на +5,0","Ввод":"В2-1, Ø76×3,5","Опуски":"Ø57×3,5","Испытание":"гидравлическое + промывка"},src:"A-DD-62252 · A-FF-62253"};
+const pipe=(a,b,r)=>add(gM,bar(new THREE.CylinderGeometry(r,r,a.distanceTo(b),10).rotateX(Math.PI/2),MAT.fire,a,b),fwInfo);
+pipe(P(1,0.6,5.0),P(1,W-0.6,5.0),0.038);pipe(P(1,0.6,5.0),P(13,0.6,5.0),0.038);pipe(P(1,W-0.6,5.0),P(13,W-0.6,5.0),0.038);pipe(P(13,0.6,-0.6),P(13,0.6,5.0),0.038);
+[[6,0.45],[6,W-0.45],[12,0.45],[12,W-0.45]].forEach(([x,y],i)=>{
+  pipe(P(x,y>W/2?W-0.6:0.6,5.0),P(x,y>W/2?W-0.6:0.6,1.6),0.028);
+  add(gM,new THREE.Mesh(new THREE.BoxGeometry(0.7,0.9,0.25),MAT.fire),{t:"Пожарный кран ПК/FH-"+(i+1),d:{"Высота клапана":"+1,350","Подвод":"Ø57×3,5","Кол-во":"4 шт"},src:"A-DD-62252 · A-EB-62254"}).position.copy(P(x+0.6,y,1.35));
+});
+// lights
+for(const x of[2,5.5,9,12])for(const y of[3,8,13])add(gM,new THREE.Mesh(new THREE.BoxGeometry(0.6,0.05,0.6),MAT.light),{t:"Светильник LED 25 Вт",d:{"Тип":"ARCTIC.OPL ECO LED 600, IP65, 4000 K","Высота":"3,5 м","Норма":"75 лк","Всего":"≈ 22 рабочих + 6 аварийных"},src:"E-DD-63284 · E-GA-63287"}).position.copy(P(x,y,3.5));
+for(const [x,y] of[[18.5,2.6],[18.5,7.7],[18.5,13]])add(gM,new THREE.Mesh(new THREE.BoxGeometry(0.6,0.05,0.6),MAT.light),{t:"Светильник LED 25 Вт",d:{"Помещение":"склад","Высота":"3,5 м"},src:"E-DD-63284"}).position.copy(P(x,y,3.5));
+add(gM,new THREE.Mesh(new THREE.BoxGeometry(0.5,0.8,0.18),MAT.panel),{t:"Щит ЩР3",d:{"Тип":"ЩРУН-3/30, IP31","Ввод":"ВН-32 63 А, автомат 25 А","Учёт":"Меркурий 230","Pу / Pр":"11,2 / 9,2 кВт","Проблема":"не хватает под отопление — Q1"},src:"E-FB-63283 · E-GA-63287"}).position.copy(P(0.5,1.4,1.6));
+// CCTV
+const camInfo=n=>({t:"Камера "+n,d:{"Модель":"Dahua DH-IPC-HFW5442H-ZE, 4 Мп","Шкаф":"ВН №12, 600×600, термостаб.","Объём":"вероятно интерфейс — Q9"},src:"C-DD-66579 · I-SF-65069"});
+[["CAM 37",[6,-0.45,5.2]],["CAM 38",[17.6,-0.45,5.2]],["CAM 39",[0,W+0.45,5.2]]].forEach(([n,p])=>add(gM,new THREE.Mesh(new THREE.BoxGeometry(0.18,0.16,0.4),MAT.cam),camInfo(n)).position.copy(P(...p)));
+
+/* ---- Loads (arrows) ---- */
+const gLoad=new THREE.Group();gLoad.visible=false;root.add(gLoad);
+for(let x=1;x<L;x+=2.5)for(let y=1;y<W;y+=2.5){
+  const top=rafterY(y)+0.6;gLoad.add(new THREE.ArrowHelper(new THREE.Vector3(0,-1,0),P(x,y,top+1.6),1.4,0x9fd3ef,0.35,0.2));
+}
+for(let x=1;x<L;x+=2.4)for(const h of[1.2,3,4.8])gLoad.add(new THREE.ArrowHelper(new THREE.Vector3(0,0,-1),P(x,W+3.2,h),2.6,0xff8a3d,0.45,0.25));
+for(let x=1;x<L;x+=2.4)gLoad.add(new THREE.ArrowHelper(new THREE.Vector3(0,1,0),P(x,W*0.25,rafterY(W*0.25)+0.5),1.2,0x6cc3e0,0.3,0.18));
+
+/* ---- Labels ---- */
+const gLbl=new THREE.Group();root.add(gLbl);
+const lbl=(txt,cls,pos)=>{const d=document.createElement("div");d.className="lbl "+cls;d.textContent=txt;const o=new CSS2DObject(d);o.position.copy(pos);gLbl.add(o);};
+AX.forEach((x,i)=>lbl(String(i+1),"",P(x,-2.2,0)));
+lbl("А","",P(-2.6,0,0));lbl("Б","",P(-2.6,W,0));
+lbl("Гараж 210 м²","room",P(6.5,W/2,0.6));lbl("Стеллажи","room",P(18.5,13,0.6));lbl("Реагенты","room",P(18.5,7.7,0.6));lbl("Масло","room",P(18.5,2.6,0.6));
+lbl("снег 0,8 кПа","room",P(L/2,W/2,R+3.4));
+["CAM 37","CAM 38","CAM 39"].forEach((n,i)=>lbl(n,"cam",P(...[[6,-0.6,5.8],[17.6,-0.6,5.8],[0,W+0.6,5.8]][i])));
+
+gO.children.forEach(c=>{const p=c.position;c.userData.ex=p.z<-W/2+0.1?new THREE.Vector3(0,0,-4):p.z>W/2-0.1?new THREE.Vector3(0,0,4):p.x<0?new THREE.Vector3(-4,0,0):new THREE.Vector3(4,0,0);});
+/* ---- base positions ---- */
+Object.values(LAYERS).forEach(g=>g.children.forEach(c=>{if(!c.userData.base)c.userData.base=c.position.clone();}));
+
+/* ---- UI: layers ---- */
+const lay=document.getElementById("layers");
+Object.values(LAYERS).forEach(g=>{
+  const id="ly-"+g.userData.key;
+  const l=document.createElement("label");l.htmlFor=id;
+  l.innerHTML=`<input type="checkbox" id="${id}" checked><i style="background:#${g.userData.color.toString(16).padStart(6,"0")}"></i>${g.userData.name}`;
+  l.querySelector("input").addEventListener("change",e=>{g.visible=e.target.checked;});
+  lay.appendChild(l);
+});
+
+/* ---- states ---- */
+let explode=0,explodeT=0,xray=false,quake=0,assembling=-1;
+const ASSEMBLY=["fnd","slab","col","raf","post","brace","pur","part","wall","open","roof","mep"];
+const btn=id=>document.getElementById(id);
+btn("bExplode").onclick=e=>{explodeT=explodeT?0:1;e.target.classList.toggle("on",!!explodeT);};
+btn("bXray").onclick=e=>{xray=!xray;e.target.classList.toggle("on",xray);ENVELOPE.forEach(m=>{m.transparent=xray;m.opacity=xray?0.13:1;m.depthWrite=!xray;m.needsUpdate=true;});};
+btn("bLoads").onclick=e=>{gLoad.visible=!gLoad.visible;e.target.classList.toggle("on",gLoad.visible);};
+btn("bQuake").onclick=()=>{quake=reduce?0:3.0;};
+btn("bLabels").onclick=e=>{gLbl.visible=!gLbl.visible;lr.domElement.style.display=gLbl.visible?"":"none";e.target.classList.toggle("on",gLbl.visible);};
+btn("bAssemble").onclick=()=>{assembling=0;explodeT=0;btn("bExplode").classList.remove("on");};
+document.getElementById("autorot").onchange=e=>{ctl.autoRotate=e.target.checked;};
+const CAMS={iso:[[30,20,32],[0,3,0]],gate:[[-34,6,4],[0,3,0]],top:[[0.01,48,0.01],[0,0,0]],in:[[-8,2.2,-3],[8,2.5,2]]};
+let camAnim=null;
+document.querySelectorAll("[data-cam]").forEach(b=>b.onclick=()=>{const [p,t]=CAMS[b.dataset.cam];camAnim={t:0,p0:cam.position.clone(),t0:ctl.target.clone(),p1:new THREE.Vector3(...p),t1:new THREE.Vector3(...t)};ctl.autoRotate=false;document.getElementById("autorot").checked=false;});
+const clip=document.getElementById("clip"),clipv=document.getElementById("clipv");
+clip.oninput=()=>{const v=+clip.value;if(v>=100){clipPlane.constant=100;clipv.textContent="разрез выключен";}else{const x=v/100*L;clipPlane.constant=x-L/2;clipv.textContent="разрез на "+x.toFixed(1).replace(".",",")+" м от оси 1";}};
+
+/* ---- picking ---- */
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();let hover=null;
+const info=document.getElementById("info");
+function pick(ev){
+  const r=renderer.domElement.getBoundingClientRect();
+  mouse.set((ev.clientX-r.left)/r.width*2-1,-(ev.clientY-r.top)/r.height*2+1);
+  ray.setFromCamera(mouse,cam);
+  const hits=ray.intersectObjects(root.children,true).filter(h=>h.object.userData.info&&h.object.visible&&h.object.parent.visible&&(clipPlane.constant>=100||h.point.x<=clipPlane.constant+0.01));
+  return hits[0]?hits[0].object:null;
+}
+let down=null;
+renderer.domElement.addEventListener("pointerdown",e=>{down=[e.clientX,e.clientY];});
+renderer.domElement.addEventListener("pointerup",e=>{
+  if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;
+  const o=pick(e);if(!o)return;
+  const i=o.userData.info;
+  info.innerHTML=`<h3>${i.t}</h3><dl>${Object.entries(i.d).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl><div class="src">${i.src}</div>`;
+  if(hover){hover.material=hover.userData.mat;}
+  o.userData.mat=o.material;o.material=o.material.clone();o.material.emissive=new THREE.Color(0xff8a3d);o.material.emissiveIntensity=0.6;hover=o;
+});
+renderer.domElement.addEventListener("pointermove",e=>{renderer.domElement.style.cursor=pick(e)?"pointer":"grab";});
+
+/* ---- resize ---- */
+function size(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h);lr.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix();}
+new ResizeObserver(size).observe(host);size();
+
+/* ---- loop ---- */
+const ease=t=>t<0?0:t>1?1:1-Math.pow(1-t,3);
+const clock=new THREE.Clock();
+function loop(){
+  const dt=Math.min(clock.getDelta(),0.05);
+  explode+=(explodeT-explode)*Math.min(1,dt*3);
+  Object.values(LAYERS).forEach(g=>{
+    if(g.userData.expl)g.position.copy(g.userData.expl).multiplyScalar(explode);
+    g.children.forEach(c=>{if(c.userData.ex)c.position.copy(c.userData.base).addScaledVector(c.userData.ex,explode);});
+  });
+  if(assembling>=0){
+    assembling+=dt*(reduce?100:1);
+    let done=true;
+    ASSEMBLY.forEach((k,li)=>{
+      const g=LAYERS[k],start=li*0.9,n=g.children.length,from=(k==="fnd"||k==="slab")?-6:12;
+      g.children.forEach((c,ci)=>{
+        const p=ease((assembling-start-ci*Math.min(0.04,0.8/n))/0.7);
+        if(p<1)done=false;
+        c.visible=p>0;
+        const base=c.userData.ex?c.userData.base.clone().addScaledVector(c.userData.ex,explode):c.userData.base;
+        c.position.set(base.x,base.y+(1-p)*from,base.z);
+      });
+    });
+    if(done)assembling=-1;
+  }
+  if(quake>0){quake-=dt;const s=Math.sin(performance.now()/40)*0.08*Math.min(1,quake);root.position.x=s;root.rotation.z=s*0.01;}else{root.position.x=0;root.rotation.z=0;}
+  if(camAnim){camAnim.t=Math.min(1,camAnim.t+dt*0.9);const k=ease(camAnim.t);cam.position.lerpVectors(camAnim.p0,camAnim.p1,k);ctl.target.lerpVectors(camAnim.t0,camAnim.t1,k);if(camAnim.t>=1)camAnim=null;}
+  ctl.update();renderer.render(scene,cam);lr.render(scene,cam);
+  requestAnimationFrame(loop);
+}
+// start with assembly
+if(!reduce)assembling=0;
+loop();
+</script>
+</body>
+</html>
