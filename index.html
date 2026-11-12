@@ -1067,7 +1067,7 @@ document.addEventListener('keydown',e=>{if(!$('#tour').classList.contains('on'))
 if(!window.THREE){document.getElementById('hub3d').style.display='none';return}
 const canvas=document.getElementById('hub3d'),host=document.getElementById('top');
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,logarithmicDepthBuffer:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.outputEncoding=THREE.sRGBEncoding;
@@ -1078,10 +1078,10 @@ const skyGeo=new THREE.SphereGeometry(900,32,16);
 const skyMat=new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,uniforms:{top:{value:new THREE.Color(0x0d1a2a)},mid:{value:new THREE.Color(0x3a2f3a)},bot:{value:new THREE.Color(0xc77a45)}},
   vertexShader:'varying vec3 vP;void main(){vP=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
   fragmentShader:'uniform vec3 top;uniform vec3 mid;uniform vec3 bot;varying vec3 vP;void main(){float h=vP.y;vec3 c=h>0.08?mix(mid,top,smoothstep(0.08,0.5,h)):mix(bot,mid,smoothstep(-0.02,0.08,h));gl_FragColor=vec4(c,1.);}'});
-scene.add(new THREE.Mesh(skyGeo,skyMat));
+const sky=new THREE.Mesh(skyGeo,skyMat);sky.renderOrder=-1;skyMat.depthTest=false;sky.frustumCulled=false;scene.add(sky);
 scene.fog=new THREE.Fog(0x2a2530,200,760);
 
-const camera=new THREE.PerspectiveCamera(38,1,0.5,2000);
+const camera=new THREE.PerspectiveCamera(38,1,2,2000);
 camera.position.set(110,70,140);
 const controls=new THREE.OrbitControls(camera,canvas);
 controls.enableDamping=true;controls.dampingFactor=.07;controls.enableZoom=false;controls.enablePan=false;
@@ -1149,11 +1149,11 @@ function mesh(geo,m,parent,cast=true){const x=new THREE.Mesh(geo,m);x.castShadow
   mesh(roofG,mat(0x2c6a4c,{roughness:.45,metalness:.25}),g);
   // ворота 3 × 3,0×3,0 на торце
   const gateM=mat(0x8b6b4a,{roughness:.5});const ribs=mat(0x6f5539);
-  [-4.6,0,4.6].forEach(x=>{const d=mesh(new THREE.BoxGeometry(3,3,.14),gateM,g);d.position.set(x,1.5,L/2+.05);for(let y=.4;y<3;y+=.5){const r=mesh(new THREE.BoxGeometry(3,.04,.04),ribs,g,false);r.position.set(x,y,L/2+.13)}});
+  [-4.6,0,4.6].forEach(x=>{const d=mesh(new THREE.BoxGeometry(3,3,.14),gateM,g);d.position.set(x,1.5,L/2+.09);for(let y=.4;y<3;y+=.5){const r=mesh(new THREE.BoxGeometry(3,.04,.04),ribs,g,false);r.position.set(x,y,L/2+.18)}});
   // окна ОК-1
   const win=mat(0x223448,{metalness:.3,roughness:.15,emissive:0x101f2c});
-  for(let i=0;i<6;i++){const w=mesh(new THREE.BoxGeometry(.1,1.18,1.46),win,g);w.position.set(W/2+.04,3.6,-L/2+2.5+i*3.7)}
-  for(let i=0;i<5;i++){const w=mesh(new THREE.BoxGeometry(.1,1.18,1.46),win,g);w.position.set(-W/2-.04,3.6,-L/2+3.5+i*4.2)}
+  for(let i=0;i<6;i++){const w=mesh(new THREE.BoxGeometry(.1,1.18,1.46),win,g);w.position.set(W/2+.07,3.6,-L/2+2.5+i*3.7)}
+  for(let i=0;i<5;i++){const w=mesh(new THREE.BoxGeometry(.1,1.18,1.46),win,g);w.position.set(-W/2-.07,3.6,-L/2+3.5+i*4.2)}
   // приточная установка на кровле
   const ahu=mesh(new THREE.BoxGeometry(1.6,.8,2.4),mat(0x9aa5ae,{metalness:.6}),g);ahu.position.set(3.2,7.1,-4);ahu.rotation.z=-.19;
   groups.warm=g;scene.add(g);
@@ -1170,20 +1170,20 @@ function mesh(geo,m,parent,cast=true){const x=new THREE.Mesh(geo,m);x.castShadow
   const seam=mat(0x2e3136);
   for(let x=-L/2+2.44;x<L/2;x+=2.44){[-W/2-.03,W/2+.03].forEach(z=>{const s=mesh(new THREE.BoxGeometry(.06,He,.05),seam,g,false);s.position.set(x,He/2,z)})}
   // кровля
-  const rs=new THREE.Shape();const o=.4,t=.15,k=(Hr-He)/(W/2);rs.moveTo(-W/2-o,He-o*k);rs.lineTo(0,Hr);rs.lineTo(W/2+o,He-o*k);rs.lineTo(W/2+o,He-o*k+t);rs.lineTo(0,Hr+t);rs.lineTo(-W/2-o,He-o*k+t);rs.closePath();
+  const rs=new THREE.Shape();const o=.4,t=.22,k=(Hr-He)/(W/2),dy=-.08;rs.moveTo(-W/2-o,He-o*k+dy);rs.lineTo(0,Hr+dy);rs.lineTo(W/2+o,He-o*k+dy);rs.lineTo(W/2+o,He-o*k+dy+t);rs.lineTo(0,Hr+dy+t);rs.lineTo(-W/2-o,He-o*k+dy+t);rs.closePath();
   const roofG=new THREE.ExtrudeGeometry(rs,{depth:L+.8,bevelEnabled:false});roofG.translate(0,0,-(L+.8)/2);roofG.rotateY(Math.PI/2);
   mesh(roofG,mat(0x3a3d43,{roughness:.4,metalness:.3}),g);
   // окна
   const win=mat(0xd9e6f2,{metalness:.2,roughness:.1,emissive:0x2b4a66,emissiveIntensity:.6});
-  for(let x=-L/2+1.2;x<L/2-1;x+=2.44){const w=mesh(new THREE.BoxGeometry(1.1,1.1,.08),win,g);w.position.set(x,1.6,W/2+.04);const w2=w.clone();w2.position.z=-W/2-.04;g.add(w2)}
-  const door=mesh(new THREE.BoxGeometry(.08,2.1,1.2),mat(0xd0632a),g);door.position.set(L/2+.04,1.05,0);
+  for(let x=-L/2+1.2;x<L/2-1;x+=2.44){const w=mesh(new THREE.BoxGeometry(1.1,1.1,.08),win,g);w.position.set(x,1.6,W/2+.07);const w2=w.clone();w2.position.z=-W/2-.07;g.add(w2)}
+  const door=mesh(new THREE.BoxGeometry(.08,2.1,1.2),mat(0xd0632a),g);door.position.set(L/2+.07,1.05,0);
   // КПП
   const k1=new THREE.Group();k1.position.set(14,0,30);g.add(k1);
   mesh(new THREE.BoxGeometry(7.32,2.8,6),mat(0x5a5e66),k1).position.y=1.4;
-  mesh(new THREE.BoxGeometry(7.9,.25,6.6),mat(0x3a3d43,{metalness:.3}),k1).position.y=2.92;
-  for(let i=-1;i<=1;i++){const s=mesh(new THREE.BoxGeometry(.05,2.8,6.02),seam,k1,false);s.position.set(i*2.44+1.22-1.22,1.4,0)}
-  const kw=mesh(new THREE.BoxGeometry(4.5,1.1,.08),win,k1);kw.position.set(0,1.7,3.02);
-  const kd=mesh(new THREE.BoxGeometry(1,2.1,.08),mat(0xd0632a),k1);kd.position.set(-3,1.05,-3.02);
+  mesh(new THREE.BoxGeometry(7.9,.25,6.6),mat(0x3a3d43,{metalness:.3}),k1).position.y=2.95;
+  for(let i=-1;i<=1;i+=2){const s=mesh(new THREE.BoxGeometry(.06,2.6,6.1),seam,k1,false);s.position.set(i*1.22,1.3,0)}
+  const kw=mesh(new THREE.BoxGeometry(4.5,1.1,.08),win,k1);kw.position.set(0,1.7,3.07);
+  const kd=mesh(new THREE.BoxGeometry(1,2.1,.08),mat(0xd0632a),k1);kd.position.set(-3,1.05,-3.07);
   // шлагбаум
   const bar=new THREE.Group();bar.position.set(-6.5,1.1,6.8);k1.add(bar);
   mesh(new THREE.BoxGeometry(.4,1.1,.4),mat(0x2b2f35),bar).position.y=-.55;
